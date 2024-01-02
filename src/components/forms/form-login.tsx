@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo.svg?react";
-import { Button, Input } from "@shared/";
+import { Button, Input, getLogin } from "@shared/";
 
 import { TSchemaLogin, schemaLogin } from "./schemas";
 
@@ -37,11 +38,15 @@ export const FormLogin = () => {
     try{
       setIsLoading(false);
       setErrorsLogin(null);  
-      await schemaLogin.parseAsync(data);
+      await getLogin(data.email, data.password);
       navigate("/");
-    } catch {
-      setIsLoading(false);
-      setErrorsLogin("Неверный логин или пароль");
+    } catch (errors) {
+      if(isAxiosError(errors)) {
+        setErrorsLogin(errors.message);
+        return;
+      }
+
+      setErrorsLogin("Что-то пошло не так...");
     }
   };
 
