@@ -41,6 +41,8 @@ export const FormLogin = () => {
       await getLogin(data.email, data.password);
       navigate("/");
     } catch (errors) {
+      setIsLoading(false);
+
       if(isAxiosError(errors)) {
         setErrorsLogin(errors.message);
         return;

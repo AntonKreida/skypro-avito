@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo.svg?react";
-import { Button, Input } from "@shared/";
+import { Button, Input, postSignUp } from "@shared/";
 
 import { TSchemaSignUp, schemaSignUp } from "./schemas";
 
@@ -18,8 +19,9 @@ export const FormSignUp = () => {
       email: "",
       password: "",
       confirm: "",
-      lastName: "",
-      firstName: "",
+      name: "",
+      surname: "",
+      phone: "",
       city: "",
     },
     mode: "onTouched",
@@ -41,10 +43,16 @@ export const FormSignUp = () => {
     try{
       setIsLoading(false);
       setErrorsLogin(null);  
-      await schemaSignUp.parseAsync(data);
-      navigate("/");
+      await postSignUp(data);
+      navigate("/login");
     } catch {
       setIsLoading(false);
+
+      if(isAxiosError(errors)) {
+        setErrorsLogin(errors.message);
+        return;
+      }
+
       setErrorsLogin("Неверный логин или пароль");
     }
   };
@@ -54,16 +62,18 @@ export const FormSignUp = () => {
     if (errors.email?.message 
         || errors.password?.message
         || errors.confirm?.message
-        || errors.firstName?.message
-        || errors.lastName?.message
-        || errors.city?.message) {
+        || errors.name?.message
+        || errors.surname?.message
+        || errors.city?.message
+        || errors.phone?.message) {
       setErrorsLogin(errors.email?.message 
         || errors.password?.message
         || errors.confirm?.message
         || errors.city?.message
-        || errors.firstName?.message
-        || errors.lastName?.message
+        || errors.name?.message
+        || errors.surname?.message
         || errors.city?.message 
+        || errors.phone?.message
         || null);
     }
   }, [errors]);
@@ -102,15 +112,22 @@ export const FormSignUp = () => {
         <Input
           control={ control }
           disabled={ isLoading }
-          name="firstName"
+          name="name"
           placeholder="Имя (необязательно)"
           type="text"
         />
         <Input
           control={ control }
           disabled={ isLoading }
-          name="lastName"
+          name="surname"
           placeholder="Фамилия (необязательно)"
+          type="text"
+        />
+        <Input
+          control={ control }
+          disabled={ isLoading }
+          name="phone"
+          placeholder="Телефон (необязательно)"
           type="text"
         />
         <Input

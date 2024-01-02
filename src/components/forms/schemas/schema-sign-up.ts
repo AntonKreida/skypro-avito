@@ -7,8 +7,9 @@ export const schemaSignUp = z.object({
   password: z.string({ required_error: "Укажите логин и пароль" })
     .min(1, { message: "Укажите логин и пароль" }),
   confirm: z.string({ required_error: "Укажите пароль еще раз" }).min(1, { message: "Укажите пароль еще раз" }),
-  firstName: z.string({ required_error: "Укажите имя" }).optional(),  
-  lastName: z.string({ required_error: "Укажите фамилию" }).optional(),
+  name: z.string({ required_error: "Укажите имя" }).optional(),  
+  surname: z.string({ required_error: "Укажите фамилию" }).optional(),
+  phone: z.string({ required_error: "Укажите телефон" }).optional(),
   city: z.string({ required_error: "Укажите город" }).optional(),  
 }).refine((data) => data.password === data.confirm, {
   message: "Пароли не совпадают",
