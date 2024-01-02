@@ -5,7 +5,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo.svg?react";
-import { Button, Input, postSignUp } from "@shared/";
+import {
+  Button, Input, InputPhone, postSignUp 
+} from "@shared/";
 
 import { TSchemaSignUp, schemaSignUp } from "./schemas";
 
@@ -53,7 +55,7 @@ export const FormSignUp = () => {
         return;
       }
 
-      setErrorsLogin("Неверный логин или пароль");
+      setErrorsLogin("Что-то пошло не так...");
     }
   };
 
@@ -123,12 +125,11 @@ export const FormSignUp = () => {
           placeholder="Фамилия (необязательно)"
           type="text"
         />
-        <Input
+        <InputPhone
           control={ control }
           disabled={ isLoading }
           name="phone"
           placeholder="Телефон (необязательно)"
-          type="text"
         />
         <Input
           control={ control }
