@@ -1,0 +1,27 @@
+#eslintrc
+.eslintrc.json
+
+# vite-config.ts
+vite.config.ts
+
+# ts-configs
+tsconfig.json
+tsconfig.paths.json
+tsconfig.node.json
+
+# eslintrc.json
+eslint.json
+
+# gitignore
+.gitignore
+
+# dist
+dist
+dist-ssr
+*.local
+
+# tailwind.config.js
+tailwind.config.js
+
+# postcss.config.js
+postcss.config.js

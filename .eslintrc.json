@@ -1,0 +1,280 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime"
+  ],
+  "ignorePatterns": [
+    "dist",
+    ".eslintrc.json"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "react-refresh",
+    "unused-imports",
+    "import"
+  ],
+  "settings": {
+    "import/extensions": [
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx"
+    ],
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ],
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
+      },
+      "typescript": {
+        "project": "./tsconfig.json",
+        "alwaysTryTypes": true
+      }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "import/no-unresolved": "error",
+    "react-refresh/only-export-components": [
+      "warn",
+      {
+        "allowConstantExport": true
+      }
+    ],
+    "no-unused-vars": 1,
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    // https://eslint.org/docs/latest/rules/eol-last
+    "eol-last": [
+      "error",
+      "always"
+    ],
+    "arrow-parens": "error",
+    "block-spacing": "error",
+    "comma-dangle": [
+      "error",
+      "only-multiline"
+    ],
+    "function-paren-newline": [
+      "error",
+      "consistent"
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "max-len": [
+      "warn",
+      {
+        "code": 120
+      }
+    ],
+    "multiline-ternary": "error",
+    // https://eslint.org/docs/latest/rules/object-curly-newline
+    "object-curly-newline": [
+      1,
+      {
+        "ObjectExpression": {
+          "minProperties": 4,
+          "multiline": true,
+          "consistent": true
+        },
+        "ObjectPattern": {
+          "minProperties": 4,
+          "multiline": true,
+          "consistent": true
+        },
+        "ImportDeclaration": {
+          "minProperties": 4,
+          "multiline": true,
+          "consistent": true
+        },
+        "ExportDeclaration": {
+          "minProperties": 4,
+          "multiline": true,
+          "consistent": true
+        }
+      }
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "condition": "parens-new-line",
+        "logical": "parens-new-line",
+        "prop": "parens-new-line"
+      }
+    ],
+    "react/jsx-tag-spacing": [
+      "error",
+      {
+        "beforeClosing": "never"
+      }
+    ],
+    "react/jsx-sort-props": "error",
+    "react/jsx-props-no-multi-spaces": "error",
+    "react/jsx-pascal-case": "error",
+    "react/jsx-one-expression-per-line": [
+      "error",
+      {
+        "allow": "single-child"
+      }
+    ],
+    "react/jsx-no-useless-fragment": "error",
+    "react/jsx-no-leaked-render": "error",
+    "react/jsx-indent": [
+      "error",
+      2
+    ],
+    "react/jsx-indent-props": [
+      "error",
+      2
+    ],
+    "react/jsx-equals-spacing": "error",
+    "react/jsx-closing-bracket-location": "error",
+    "react/jsx-max-props-per-line": [
+      "error",
+      {
+        "when": "multiline"
+      }
+    ],
+    // https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-curly-spacing.md
+    "react/jsx-curly-spacing": [
+      "error",
+      {
+        "allowMultiline": false,
+        "children": {
+          "when": "always"
+        },
+        "spacing": {
+          "objectLiterals": "never"
+        },
+        "when": "always"
+      }
+    ],
+    // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md
+    "import/order": [
+      1,
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          [
+            "sibling",
+            "parent"
+          ],
+          "index",
+          "object",
+          "type"
+        ],
+        "newlines-between": "always",
+        "warnOnUnassignedImports": true,
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/no-useless-path-segments": [
+      "error",
+      {
+        "noUselessIndex": true
+      }
+    ],
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "import/no-cycle": "error",
+    // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/exports-last.md
+    "import/exports-last": "error",
+    // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/newline-after-import.md
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 2
+      }
+    ],
+    // https://eslint.org/docs/latest/rules/linebreak-style
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    // https://eslint.org/docs/latest/rules/no-console
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    // https://eslint.org/docs/latest/rules/jsx-quotes
+    "jsx-quotes": [
+      "warn",
+      "prefer-double"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 2,
+        "maxBOF": 0
+      }
+    ],
+    // https://eslint.org/docs/latest/rules/object-property-newline
+    "object-property-newline": [
+      "error",
+      {
+        "allowAllPropertiesOnSameLine": true
+      }
+    ]
+  }
+}
