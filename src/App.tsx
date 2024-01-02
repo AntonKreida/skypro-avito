@@ -1,6 +1,9 @@
+import { Button } from "@shared/";
 import "@styles/main.css";
 
 
 export const App = () => (
-  <div className="text-3xl font-roboto">Hello World</div>
+  <div>
+    <Button text="Hello" type="button" />
+  </div>
 );
