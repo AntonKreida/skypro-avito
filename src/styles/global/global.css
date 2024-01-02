@@ -3,13 +3,9 @@
 @tailwind utilities;
 
 @layer components {
-    #root {
-      @apply h-full;
-      @apply w-full
-    }
-    html,
     body {
       @apply h-screen;
       @apply w-screen;
+      @apply overflow-x-hidden;
     }
 }
