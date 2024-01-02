@@ -7,7 +7,6 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/shared/**/*.{js,ts,jsx,tsx}",
     "./src/hooks/**/*.{js,ts,jsx,tsx}",
-
   ],
   theme: {
     extend: {

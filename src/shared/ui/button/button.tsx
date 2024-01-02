@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { HTMLProps, FC } from "react";
+import { twMerge } from "tailwind-merge";
 
 
 interface IButtonProps extends HTMLProps<HTMLButtonElement> {
@@ -7,21 +8,24 @@ interface IButtonProps extends HTMLProps<HTMLButtonElement> {
     text: string;
     className?: string;
     sizeButton?: "smile";
+    colors?: "white";
 }
 
 export const Button: FC<IButtonProps> = ({
-  text, className, type, sizeButton, ...pops 
+  text, className, type, sizeButton, colors, ...props 
 }) => (
   <button
-    className={ classNames(`px-8 py-3 
-    default:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
+    className={ twMerge(classNames(`px-8 py-3 
+    disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
     text-white font-roboto font-normal text-base rounded-md
     focus:outline-none active:scale-90 transition w-full
+    disabled:text-gray-600 disabled:cursor-default
     `, {
-      "px-6 py-2": sizeButton
-    }, [className]) } 
+      "px-6 py-2": sizeButton,
+      "border border-gray-custom text-black bg-white hover:bg-gray-custom": colors
+    }, [className])) } 
     type={ type } 
-    { ...pops }
+    { ...props }
   >
     { text }
   </button>
