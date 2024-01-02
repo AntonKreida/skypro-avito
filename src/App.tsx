@@ -4,6 +4,10 @@ import "@styles/main.css";
 
 export const App = () => (
   <div>
-    <Button text="Hello" type="button" />
+    <Button 
+      sizeButton="smile" 
+      text="Hello"
+      type="button"
+    />
   </div>
 );
