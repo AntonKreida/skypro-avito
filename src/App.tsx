@@ -1,25 +1,13 @@
-import { useForm } from "react-hook-form";
+import { BrowserRouter } from "react-router-dom";
 
-import { Button, Input, InputSearch } from "@shared/";
 import "@styles/main.css";
 
+import { AppRouter } from "./router";
 
-export const App = () => {
-  const { control } = useForm();
 
-  return (
-    <div>
-      <Button 
-        sizeButton="smile" 
-        text="Hello"
-        type="button"
-      />
-      <Input
-        control={ control } 
-        name="name"
-        placeholder="Enter your name" 
-      />
-      <InputSearch placeholder="Search" />
-    </div>
-  );
-};
+export const App = () => (
+  <BrowserRouter>
+    <AppRouter />
+  </BrowserRouter>
+  
+);
