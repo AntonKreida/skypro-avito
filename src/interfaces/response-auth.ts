@@ -3,3 +3,7 @@ export interface IResponseLogin {
     refresh_token: string;
     token_type: string;
 }
+
+export interface IResponseErrorLogin {
+    detail: string;
+}

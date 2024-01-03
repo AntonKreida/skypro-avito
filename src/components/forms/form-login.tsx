@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
-import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo.svg?react";
-import { Button, Input, getLogin } from "@shared/";
+import { useAppDispatch, useAppSelector } from "@hooks/";
+import { selectorUser, postLoginUser } from "@redux/";
+import { Button, Input } from "@shared/";
 
 import { TSchemaLogin, schemaLogin } from "./schemas";
 
@@ -23,8 +23,8 @@ export const FormLogin = () => {
     resolver: zodResolver(schemaLogin),
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorsLogin, setErrorsLogin] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { isLoading, errorMessage } = useAppSelector(selectorUser);
   
 
   const handlerOnClickNextSignIn = () => {
@@ -32,32 +32,13 @@ export const FormLogin = () => {
   };
 
   const handlerOnSubmitForm: SubmitHandler<TSchemaLogin> = async (data) => {
-    setErrorsLogin(null);
-    setIsLoading(true);
+    const { meta } = await dispatch(postLoginUser(data));
 
-    try{
-      setIsLoading(false);
-      setErrorsLogin(null);  
-      await getLogin(data.email, data.password);
+    if(meta.requestStatus === "fulfilled") {
       navigate("/");
-    } catch (errors) {
-      setIsLoading(false);
-
-      if(isAxiosError(errors)) {
-        setErrorsLogin(errors.message);
-        return;
-      }
-
-      setErrorsLogin("Что-то пошло не так...");
     }
   };
 
-
-  useEffect(() => {
-    if (errors.email?.message || errors.password?.message) {
-      setErrorsLogin(errors.email?.message || errors.password?.message || null);
-    }
-  }, [errors]);
 
   return (
     <form 
@@ -77,6 +58,7 @@ export const FormLogin = () => {
           type="text"
         />
         <Input
+          autoComplete="on"
           control={ control }
           disabled={ isLoading }
           name="password"
@@ -85,8 +67,14 @@ export const FormLogin = () => {
         />
       </div>
 
-      { errorsLogin
-        ? <p className="text-red-500 text-center">{ errorsLogin }</p>
+      { errors || errorMessage
+        ? (
+          <p className="text-red-500 text-center">
+            { errorMessage 
+          || errors.email?.message 
+          || errors.password?.message }
+          </p>
+        )
         : null }
 
       <div className="flex flex-col gap-5">

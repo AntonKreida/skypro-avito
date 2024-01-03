@@ -1,18 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo.svg?react";
+import { useAppDispatch, useAppSelector } from "@hooks/";
+import { postSignUpUser, selectorUser } from "@redux/";
 import {
-  Button, Input, InputPhone, postSignUp 
+  Button, Input, InputPhone, 
 } from "@shared/";
 
 import { TSchemaSignUp, schemaSignUp } from "./schemas";
 
 
 export const FormSignUp = () => {
+  const dispatch = useAppDispatch();
+  const { isLoading, errorMessage } = useAppSelector(selectorUser);
+
   const navigate = useNavigate();
   const {
     control, handleSubmit, formState: { errors } 
@@ -30,32 +34,17 @@ export const FormSignUp = () => {
     resolver: zodResolver(schemaSignUp),
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorsLogin, setErrorsLogin] = useState<string | null>(null);
+  const [errorsFormSignUp, setErrorsFormSignUp] = useState<string | null>(null);
   
-
   const handlerOnClickNextLoginIn = () => {
     navigate("/login");
   };
 
   const handlerOnSubmitForm: SubmitHandler<TSchemaSignUp> = async (data) => {
-    setErrorsLogin(null);
-    setIsLoading(true);
+    const { meta } = await dispatch(postSignUpUser(data));
 
-    try{
-      setIsLoading(false);
-      setErrorsLogin(null);  
-      await postSignUp(data);
+    if(meta.requestStatus === "fulfilled") {
       navigate("/login");
-    } catch {
-      setIsLoading(false);
-
-      if(isAxiosError(errors)) {
-        setErrorsLogin(errors.message);
-        return;
-      }
-
-      setErrorsLogin("Что-то пошло не так...");
     }
   };
 
@@ -68,7 +57,7 @@ export const FormSignUp = () => {
         || errors.surname?.message
         || errors.city?.message
         || errors.phone?.message) {
-      setErrorsLogin(errors.email?.message 
+      setErrorsFormSignUp(errors.email?.message 
         || errors.password?.message
         || errors.confirm?.message
         || errors.city?.message
@@ -98,6 +87,7 @@ export const FormSignUp = () => {
           type="text"
         />
         <Input
+          autoComplete="on"
           control={ control }
           disabled={ isLoading }
           name="password"
@@ -105,6 +95,7 @@ export const FormSignUp = () => {
           type="password"
         />
         <Input
+          autoComplete="on"
           control={ control }
           disabled={ isLoading }
           name="confirm"
@@ -140,8 +131,8 @@ export const FormSignUp = () => {
         />
       </div>
 
-      { errorsLogin
-        ? <p className="text-red-500 text-center">{ errorsLogin }</p>
+      { errorsFormSignUp || errorMessage
+        ? <p className="text-red-500 text-center">{ errorsFormSignUp || errorMessage }</p>
         : null }
 
       <div className="flex flex-col gap-5">

@@ -33,6 +33,7 @@ export default ({ mode }) => {
         "@hocs": path.resolve(__dirname, "./src/hocs/"),
         "@api-hooks": path.resolve(__dirname, "./src/api-hooks/"),
         "@lib": path.resolve(__dirname, "./src/lib/"),
+        "@redux": path.resolve(__dirname, "./src/redux/"),
       },
     },
     server: {

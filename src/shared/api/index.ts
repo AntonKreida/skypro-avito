@@ -1,1 +1,1 @@
-export * from "./fetch-auth";
+export * from "./base";

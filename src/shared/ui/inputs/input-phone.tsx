@@ -22,7 +22,7 @@ export const InputPhone: FC<IInputPhoneProps> = ({
 
   const handlerFocus = (event: FocusEvent) => {
     event.stopPropagation();
-    setOnFocus(true);
+    setOnFocus(false);
   };
 
   return (
