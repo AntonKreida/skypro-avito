@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
-import { ContainerAuth } from "@layouts/";
-import { Login, SignUp } from "@pages/";
+import { ContainerAuth, ContainerMain } from "@layouts/";
+import { Login, SignUp, Home } from "@pages/";
 
 
 export const AppRouter = () => (
@@ -9,6 +9,10 @@ export const AppRouter = () => (
     <Route element={ <ContainerAuth /> }>
       <Route element={ <Login /> } path="/login" />
       <Route element={ <SignUp /> } path="/sign-up" />
+    </Route>
+
+    <Route element={ <ContainerMain /> }>
+      <Route element={ <Home /> } path="/" />
     </Route>
   </Routes>
 );

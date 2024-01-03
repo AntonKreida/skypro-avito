@@ -3,7 +3,7 @@ import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 
 import { IResponseLogin } from "@interfaces/";
 
-import { setUserLogin, setLoginOutUser } from "../slices";
+import { setUserLogin, setLoginOutUser } from "./user";
 import { type RootState } from "../store";
 
 import type {
@@ -14,7 +14,7 @@ import type {
 
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API,
+  baseUrl: import.meta.env.VITE_API_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).user.access_token;
 

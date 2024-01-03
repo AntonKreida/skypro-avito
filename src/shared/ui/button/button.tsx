@@ -21,7 +21,7 @@ export const Button: FC<IButtonProps> = ({
     focus:outline-none active:scale-90 transition w-full
     disabled:text-gray-600 disabled:cursor-default
     `, {
-      "px-6 py-2": sizeButton,
+      "px-6 py-2 border border-white w-fit": sizeButton,
       "border border-gray-custom text-black bg-white hover:bg-gray-custom": colors
     }, [className])) } 
     type={ type } 
