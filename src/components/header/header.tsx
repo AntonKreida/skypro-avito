@@ -15,6 +15,10 @@ export const Header = () => {
     navigate("/login");
   };
 
+  const handlerOnClickProfile = () => {
+    navigate("/profile");
+  };
+
 
   return (
     <header className="
@@ -41,7 +45,8 @@ export const Header = () => {
               type="button"
             />
             <Button 
-              sizeButton="smile" 
+              onClick={ handlerOnClickProfile } 
+              sizeButton="smile"
               text="Личный кабинет"
               type="button"
             />
