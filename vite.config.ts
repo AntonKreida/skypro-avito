@@ -8,10 +8,7 @@ import checker from "vite-plugin-checker";
 export default ({ mode }) => {
   process.env = {...process.env, ...loadEnv(mode, process.cwd())};
   return defineConfig({
-    plugins: [react(), svgr({ svgrOptions: {
-      exportType:"default"
-      }
-    }), checker({
+    plugins: [react(), svgr(), checker({
       typescript: true,
       eslint: {
         lintCommand: "eslint \"./**/*.{ts,tsx}\"",
@@ -34,7 +31,9 @@ export default ({ mode }) => {
         "@hooks": path.resolve(__dirname, "./src/hooks/"),
         "@api": path.resolve(__dirname, "./src/api/"),
         "@hocs": path.resolve(__dirname, "./src/hocs/"),
-        "@api-hooks": path.resolve(__dirname, "./src/api-hooks/")
+        "@api-hooks": path.resolve(__dirname, "./src/api-hooks/"),
+        "@lib": path.resolve(__dirname, "./src/lib/"),
+        "@redux": path.resolve(__dirname, "./src/redux/"),
       },
     },
     server: {
@@ -46,4 +45,3 @@ export default ({ mode }) => {
     },
   });
 }
-

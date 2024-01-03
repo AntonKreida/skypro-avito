@@ -1,2 +1,5 @@
 /*1. GLOBAL*/
-@import "./global/global.css"
+@import "./global/global.css";
+
+/*2. FONTS */
+@import "./fonts/fonts.css";

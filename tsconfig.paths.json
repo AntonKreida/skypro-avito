@@ -40,6 +40,12 @@
             ],
             "@api-hooks/": [
                 "./src/api-hooks/"
+            ],
+            "@lib/": [
+                "./src/lib/"
+            ],
+            "@redux/": [
+                "./src/redux/"
             ]
         }
     }

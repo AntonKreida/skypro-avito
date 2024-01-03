@@ -7,10 +7,18 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx}",
     "./src/shared/**/*.{js,ts,jsx,tsx}",
     "./src/hooks/**/*.{js,ts,jsx,tsx}",
-
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "gray-custom": "#D9D9D9",
+        "blue-custom-def": "#009EE4",
+        "blue-custom-hover": "#0080C1",
+      }
+    },
+    fontFamily: {
+      roboto: ["Roboto", "sans-serif"],
+    },
   },
   plugins: [],
 }
