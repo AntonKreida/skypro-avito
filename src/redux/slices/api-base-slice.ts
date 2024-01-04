@@ -33,7 +33,7 @@ FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if(result.error && result.error.status === 403) {
+  if(result.error && result.error.status === 401) {
     const { access_token, refresh_token } = (api.getState() as RootState).user;
 
     const resultRefreshToken = await baseQuery({
@@ -59,4 +59,5 @@ FetchBaseQueryError
 export const apiBaseSlice = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
+  tagTypes: ["Ads", "User", "AdsUser"],
 });
