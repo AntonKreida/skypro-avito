@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo-main.svg?react";
-import { FormProfile } from "@components/";
+import { FormProfile, SliderProfile } from "@components/";
 import { useGetAdsUserQuery, useGetCurrentUserProfileQuery } from "@redux/";
 import { Button, Spinner } from "@shared/";
 
@@ -14,8 +14,6 @@ export const Profile = () => {
   const handlerOnClickBackHomePage = () => {
     navigate("/");
   };
-
-  console.log(adsUser);
 
   return  (
     <>
@@ -42,7 +40,12 @@ export const Profile = () => {
                 : "Здравствуйте!" }
               { " " }
             </h1>
-            <FormProfile userProfile={ userProfile } />
+            <div className="flex flex-col gap-16">
+              <FormProfile userProfile={ userProfile } />
+              { adsUser.length > 0
+                ? <SliderProfile slideList={ adsUser } />
+                : null }
+            </div>
           </div>
         ) }
     </>
