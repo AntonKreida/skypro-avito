@@ -14,3 +14,14 @@ export interface IRequestDataUpdateUser {
     phone?: string;
     surname?: string;
 }
+
+export interface IRequestCreateAsdText {
+    title: string;
+    description: string;
+    price: number;
+}
+
+export interface IRequestCreateAsdImages {
+    id: number;
+    files: FormData;
+}

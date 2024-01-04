@@ -1,4 +1,4 @@
-import { IAsd } from "@interfaces/";
+import { IAsd, IRequestCreateAsdImages, IRequestCreateAsdText } from "@interfaces/";
 
 import { apiBaseSlice } from "../api-base-slice";
 
@@ -17,8 +17,29 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["AdsUser"],
+    }),
+    postCreateAdsText: builder.mutation<IAsd, IRequestCreateAsdText>({
+      query: (dataForm) => ({
+        url: "/adstext",
+        method: "POST",
+        body: { ...dataForm },
+      }),
+      invalidatesTags: ["AdsUser"],
+    }),
+    postCreateAdsImage: builder.mutation<IAsd, IRequestCreateAsdImages>({
+      query: (dataForm) => ({
+        url: `/ads/${dataForm.id}/image`,
+        method: "POST",
+        body: dataForm.files,
+      }),
+      invalidatesTags: ["AdsUser"],
     })
   }),
 });
 
-export const { useGetAdsQuery, useGetAdsUserQuery } = apiSliceAds;
+export const {
+  useGetAdsQuery, 
+  useGetAdsUserQuery, 
+  usePostCreateAdsTextMutation, 
+  usePostCreateAdsImageMutation 
+} = apiSliceAds;

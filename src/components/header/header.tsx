@@ -68,7 +68,10 @@ export const Header = () => {
       { isOpenModal
         ? (
           <Backdrop onClick={ handlerOnClickCloseModal }>
-            <ModalCreateAsd onClickCloseModal={ handlerOnClickCloseModal } />
+            <ModalCreateAsd 
+              onClickCloseModal={ handlerOnClickCloseModal }
+              setIsOpenModal={ setIsOpenModal }
+            />
           </Backdrop>
         )
         : null }

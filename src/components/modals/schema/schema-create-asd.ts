@@ -9,8 +9,8 @@ export const schemaCreateAsd = z.object({
   price: z.number({ required_error: "Укажите цену" }).transform((value) => Number(value)),
   files: z.array(z.instanceof(FormData)).optional().nullable()  
 }).refine((data) => {
-  if(data.files) {
-    return data.files.length > 5;
+  if(data.files && data.files.length > 5) {
+    return false;
   }
 
   return true;

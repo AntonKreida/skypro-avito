@@ -23,13 +23,17 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const files = acceptedFiles.slice(0, 5 - listFilesItems.length);
-    const formData = new FormData();
 
     setListFilesItems((prev) => [...prev, ...files]);
     
-    files.forEach((file) => formData.append("file", file, file.name));
+    const listFormData = files.reduce((acc: FormData[], file) => {
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      acc.push(formData);
+      return acc;
+    }, []);
 
-    setValue(name, formData, { shouldDirty: true, shouldTouch: true });
+    setValue(name, listFormData, { shouldDirty: true, shouldTouch: true });
   }, [listFilesItems.length, name, setValue]);
 
   const {

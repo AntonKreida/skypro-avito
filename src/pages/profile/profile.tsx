@@ -17,7 +17,7 @@ export const Profile = () => {
 
   return  (
     <>
-      <div className="flex justify-start gap-14 w-full h-fit py-11 items-center">
+      <div className="flex justify-start gap-14 w-full h-fit py-11 items-center px-14">
         <Logo />
         <Button 
           className="w-fit"
@@ -34,7 +34,7 @@ export const Profile = () => {
         )
         : (
           <div className="flex flex-col gap-10 w-full">
-            <h1 className="text-4xl font-roboto font-medium text-black">
+            <h1 className="text-4xl font-roboto px-14 font-medium text-black">
               { userProfile?.name
                 ? `Здравствуйте ${userProfile.name}!`
                 : "Здравствуйте!" }

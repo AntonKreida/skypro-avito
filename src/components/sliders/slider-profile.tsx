@@ -20,10 +20,10 @@ export const SliderProfile: FC<ISliderProfileProps> = ({ slideList }) => {
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      <h2 className="text-3xl font-roboto font-medium">Мои товары</h2>
+      <h2 className="text-3xl font-roboto font-medium px-14">Мои товары</h2>
       <div className="flex gap-5 items-center">
         <button 
-          className="w-10 h-10 border-none bg-none disabled:hidden active:scale-[0.8] transition"
+          className="w-10 h-10 border-none bg-none disabled:opacity-0 active:scale-[0.8] transition"
           disabled={ progressSlide <= 0 }
           onClick={ () => swiperRef.current?.slidePrev() }
         >
@@ -53,7 +53,7 @@ export const SliderProfile: FC<ISliderProfileProps> = ({ slideList }) => {
           )) }
         </Swiper>
         <button 
-          className="w-10 h-10 border-none bg-none disabled:hidden active:scale-[0.8] transition"
+          className="w-10 h-10 border-none bg-none disabled:opacity-0 active:scale-[0.8] transition"
           disabled={ progressSlide >= 1 || isEndSlide }
           onClick={ () => swiperRef.current?.slideNext() }
         >

@@ -1,9 +1,12 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC, MouseEventHandler } from "react";
+import {
+  Dispatch, FC, MouseEventHandler, SetStateAction, useEffect 
+} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import RubIcon from "@assets/icon/rub.svg?react";
+import { usePostCreateAdsImageMutation, usePostCreateAdsTextMutation } from "@redux/";
 import {
   Button, InputDropLabelPhoto, InputLabel, TextareaLabel 
 } from "@shared/";
@@ -13,9 +16,10 @@ import { TSchemaCreateAsd, schemaCreateAsd } from "./schema/schema-create-asd";
 
 interface IModalCreateAsdProps {
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
+    setIsOpenModal: Dispatch<SetStateAction<boolean>>
 }
 
-export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal }) => {
+export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
   const {
     control, setValue, handleSubmit, formState: { errors, isDirty } 
   } = useForm<TSchemaCreateAsd>({
@@ -29,9 +33,42 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal }) 
     resolver: zodResolver(schemaCreateAsd),
   });
 
+  const [
+    postCreateAsdText, 
+    { isLoading: isLoadingText, isSuccess: isSuccessText }
+  ] = usePostCreateAdsTextMutation();
+  const [
+    postCreateAsdImage, 
+    { isLoading: isLoadingImage, isSuccess: isSuccessImage }
+  ] = usePostCreateAdsImageMutation();
+
   const handlerOnSubmitForm: SubmitHandler<TSchemaCreateAsd> = async (data) => {
-    console.log(data);
+    const dataForCreateAsd = {
+      title: data.title,
+      description: data.description,
+      price: data.price,
+    };
+
+    const newAsd = await postCreateAsdText(dataForCreateAsd).unwrap();
+
+    if(data.files && typeof data.files !== "string" && newAsd) {
+      data.files.forEach(async (file) => {
+        const dataForAddImage = {
+          id: newAsd.id,
+          files: file,
+        };
+    
+        await postCreateAsdImage(dataForAddImage);
+      });
+    }
   };
+
+  
+  useEffect(() => {
+    if((isSuccessText && isSuccessImage) || isSuccessImage) {
+      setIsOpenModal(false);
+    }
+  }, [isSuccessText, isSuccessImage, setIsOpenModal]);
 
   return (
     <div 
@@ -54,7 +91,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal }) 
         <InputLabel 
           addStylesLabel="text-black"
           control={ control }
-          disabled={ false }
+          disabled={ isLoadingText || isLoadingImage }
           isErrorRequestFrom={ !!errors.title }
           labelTitle="Название"
           name="title"
@@ -63,7 +100,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal }) 
         <TextareaLabel
           addStylesLabel="text-black"
           control={ control }
-          disabled={ false }
+          disabled={ isLoadingText || isLoadingImage }
           isErrorRequestFrom={ !!errors.description }
           labelTitle="Описание"
           name="description"
@@ -81,7 +118,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal }) 
           addStyleInput="pr-9"
           addStylesLabel="text-black w-fit"
           control={ control }
-          disabled={ false }
+          disabled={ isLoadingText || isLoadingImage }
           icon={ <RubIcon className="w-5 h-5 absolute top-1/2 right-4 -translate-y-1/2" /> }
           isErrorRequestFrom={ !!errors.price }
           labelTitle="Укажите цену"
