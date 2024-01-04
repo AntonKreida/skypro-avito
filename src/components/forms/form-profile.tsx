@@ -46,9 +46,9 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
       <h2 className="text-3xl font-roboto font-medium">Настройка профиля</h2>
       <div className="flex gap-14">
         <InputProfilePhoto control={ control } name="avatar" setValue={ setValue } />
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-5">
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center w-full">
               <InputProfile
                 control={ control }
                 disabled={ false }

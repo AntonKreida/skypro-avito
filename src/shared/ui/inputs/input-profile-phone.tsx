@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from "classnames";
-import { FC, useState, FocusEvent } from "react";
+import { FC, useState } from "react";
 import { Controller, Control } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
@@ -23,12 +23,7 @@ export const InputProfilePhone: FC<IInputProfilePhoneProps> = ({
   disabled,
   isErrorRequestFrom,
 }) => {
-  const [onFocus, setOnFocus] = useState(false);
-
-  const handlerFocus = (event: FocusEvent) => {
-    event.stopPropagation();
-    setOnFocus(false);
-  };
+  const [isFocus, setIsFocus] = useState(false);
 
   return (
     <Controller
@@ -42,6 +37,7 @@ export const InputProfilePhone: FC<IInputProfilePhoneProps> = ({
         <label className={ twMerge(classNames("font-roboto text-base text-gray-400 flex-col flex gap-1 w-full", {
           "text-red-500": error || isErrorRequestFrom,
           "text-gray-300": disabled,
+          "text-blue-custom-def": isFocus,
         })) }
         >
           { !error ? 
@@ -56,7 +52,6 @@ export const InputProfilePhone: FC<IInputProfilePhoneProps> = ({
               </p>
             ) }
           <PatternFormat
-            allowEmptyFormatting={ onFocus }
             className={ twMerge(classNames(`
             w-full bg-none font-roboto text-lg text-black
             placeholder:text-gray-custom placeholder:font-roboto
@@ -69,9 +64,9 @@ export const InputProfilePhone: FC<IInputProfilePhoneProps> = ({
             getInputRef={ ref }
             mask="_"
             name={ name }
-            onBlur={ () => setOnFocus(false) }
+            onBlur={ () => setIsFocus(false) }
             onChange={ onChange }
-            onFocus={ handlerFocus }
+            onFocus={ () => setIsFocus(true) }
             placeholder={ placeholder }
             value={ value }
           /> 

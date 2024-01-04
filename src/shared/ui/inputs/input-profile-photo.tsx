@@ -35,32 +35,34 @@ export const InputProfilePhoto: FC<IInputProfilePhotoProps> = ({ control, name, 
       control={ control }
       name={ name } 
       render={ ({ field: { value } }) => (
-        <div className="flex flex-col gap-2 items-center justify-start" { ...getRootProps() }>
-          <input
-            name={ name }
-            type="file"
-            { ...getInputProps() }
+        <div className="h-fit">
+          <div className="flex flex-col gap-2 items-center justify-start" { ...getRootProps() }>
+            <input
+              name={ name }
+              type="file"
+              { ...getInputProps() }
           
-          />
-          <div className="w-40 h-40 rounded-full overflow-hidden">
-            { acceptedFiles.length > 0 || value
-              ? (
-                <img 
-                  className="w-full h-full object-cover rounded-full"
-                  src={ value
-                    ? `${import.meta.env.VITE_API_URL}/${value}`
-                    : URL.createObjectURL(acceptedFiles[0])   }
-                />
-              )
-              : ( <div className="w-full h-full bg-slate-200" />) }
+            />
+            <div className="w-52 h-52 rounded-full overflow-hidden">
+              { acceptedFiles.length > 0 || value
+                ? (
+                  <img 
+                    className="w-full h-full object-cover rounded-full"
+                    src={ value
+                      ? `${import.meta.env.VITE_API_URL}/${value}`
+                      : URL.createObjectURL(acceptedFiles[0])   }
+                  />
+                )
+                : ( <div className="w-full h-full bg-slate-200" />) }
+            </div>
+            <button 
+              className="font-roboto text-base font-normal text-blue-custom-def border-none bg-none"
+              onClick={ open }
+              type="button"
+            >
+              Заменить
+            </button>
           </div>
-          <button 
-            className="font-roboto text-base font-normal text-blue-custom-def border-none bg-none"
-            onClick={ open }
-            type="button"
-          >
-            Заменить
-          </button>
         </div>
       ) } 
     />
