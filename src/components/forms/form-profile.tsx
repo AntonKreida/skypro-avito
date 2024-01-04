@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { IUser } from "@interfaces/";
@@ -16,18 +16,11 @@ interface IFormProfileProps {
 }
 
 export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
-  const [postLoaderAvatarUser] = usePostLoaderUserAvatarMutation();
-  const [patchUploadUserProfile] = usePatchUpdateUserProfileMutation();
+  const [postLoaderAvatarUser, { isLoading: isLoadingAvatar }] = usePostLoaderUserAvatarMutation();
+  const [patchUploadUserProfile, { isLoading: isLoadingProfile }] = usePatchUpdateUserProfileMutation();
   const {
-    control, handleSubmit, setValue, formState: { errors, isDirty } 
+    control, handleSubmit, setValue, reset, formState: { errors, isDirty } 
   } = useForm<TSchemaProfile>({
-    defaultValues: {
-      name: userProfile.name || "",
-      phone: userProfile.phone || "",
-      city: userProfile.city || "",
-      surname: userProfile.surname || "",
-      avatar:  userProfile.avatar || "",
-    },
     mode: "onTouched",
     resolver: zodResolver(schemaProfile),
   });
@@ -40,6 +33,14 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
 
     await patchUploadUserProfile(data);
   };
+
+  useEffect(() => {
+    if(userProfile) {
+      reset({
+        ...userProfile,
+      });
+    }
+  }, [userProfile, reset]);
   
   return (
     <form className="flex flex-col gap-6" onSubmit={ handleSubmit(handlerOnSubmitForm) }>
@@ -51,14 +52,14 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
             <div className="flex gap-4 items-center w-full">
               <InputProfile
                 control={ control }
-                disabled={ false }
+                disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.name }
                 labelTitle="Имя"
                 name="name" 
               />
               <InputProfile
                 control={ control }
-                disabled={ false }
+                disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.surname }
                 labelTitle="Фамилия"
                 name="surname" 
@@ -67,7 +68,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
             <div className="flex gap-4 items-center">
               <InputProfile
                 control={ control }
-                disabled={ false }
+                disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.city }
                 labelTitle="Город"
                 name="city"
@@ -76,7 +77,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
             <div className="flex gap-4 items-center w-full">
               <InputProfilePhone
                 control={ control }
-                disabled={ false }
+                disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.phone }
                 labelTitle="Телефон"
                 name="phone" 
@@ -85,7 +86,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
           </div>
           <Button 
             className="w-fit"
-            disabled={ !isDirty }
+            disabled={ !isDirty || isLoadingAvatar || isLoadingProfile }
             text="Сохранить"
             type="submit"
           />
