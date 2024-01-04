@@ -61,13 +61,13 @@ export const InputProfile: FC<IInputProfileProps> = ({
             disabled:text-gray-custom focus:border-blue-custom-def`, {
               "!border-red-500": error || isErrorRequestFrom,
             })) }
-            disabled={ disabled } 
+            defaultValue={ value } 
+            disabled={ disabled }
             name={ name }
             onBlur={ () => setIsFocus(false) }
             onChange={ onChange }
             onFocus={ () => setIsFocus(true) }
             placeholder={ placeholder }
-            value={ value }
           /> 
         </label>
       ) }

@@ -2,17 +2,20 @@ import { useNavigate } from "react-router-dom";
 
 import Logo from "@assets/icon/logo-main.svg?react";
 import { FormProfile } from "@components/";
-import { useGetCurrentUserProfileQuery } from "@redux/";
+import { useGetAdsUserQuery, useGetCurrentUserProfileQuery } from "@redux/";
 import { Button, Spinner } from "@shared/";
 
 
 export const Profile = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetCurrentUserProfileQuery(null);
+  const { data: userProfile, isLoading: isLoadingProfile } = useGetCurrentUserProfileQuery(null);
+  const { data: adsUser, isLoading: isLoadingAdsUser } = useGetAdsUserQuery(null);
 
   const handlerOnClickBackHomePage = () => {
     navigate("/");
   };
+
+  console.log(adsUser);
 
   return  (
     <>
@@ -20,13 +23,12 @@ export const Profile = () => {
         <Logo />
         <Button 
           className="w-fit"
-          disabled={ isLoading }
           onClick={ handlerOnClickBackHomePage }
           text="Вернуться на главную" 
           type="button"
         />
       </div>
-      { isLoading || !data
+      { isLoadingProfile || isLoadingAdsUser || !userProfile || !adsUser
         ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
             <Spinner />
@@ -35,12 +37,12 @@ export const Profile = () => {
         : (
           <div className="flex flex-col gap-10 w-full">
             <h1 className="text-4xl font-roboto font-medium text-black">
-              { data?.name
-                ? `Здравствуйте ${data.name}!`
+              { userProfile?.name
+                ? `Здравствуйте ${userProfile.name}!`
                 : "Здравствуйте!" }
               { " " }
             </h1>
-            <FormProfile userProfile={ data } />
+            <FormProfile userProfile={ userProfile } />
           </div>
         ) }
     </>

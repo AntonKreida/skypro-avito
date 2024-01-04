@@ -11,7 +11,14 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getAdsUser: builder.query<IAsd[], null>({
+      query: () => ({
+        url: "/ads/me",
+        method: "GET",
+      }),
+      providesTags: ["AdsUser"],
+    })
   }),
 });
 
-export const { useGetAdsQuery } = apiSliceAds;
+export const { useGetAdsQuery, useGetAdsUserQuery } = apiSliceAds;

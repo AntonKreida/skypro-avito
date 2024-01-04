@@ -59,5 +59,5 @@ FetchBaseQueryError
 export const apiBaseSlice = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-  tagTypes: ["Ads", "User"],
+  tagTypes: ["Ads", "User", "AdsUser"],
 });
