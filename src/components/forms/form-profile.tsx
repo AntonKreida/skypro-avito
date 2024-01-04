@@ -3,6 +3,7 @@ import { FC } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { IUser } from "@interfaces/";
+import { usePatchUpdateUserProfileMutation, usePostLoaderUserAvatarMutation } from "@redux/";
 import {
   Button, InputProfile, InputProfilePhone, InputProfilePhoto 
 } from "@shared/";
@@ -15,6 +16,8 @@ interface IFormProfileProps {
 }
 
 export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
+  const [postLoaderAvatarUser] = usePostLoaderUserAvatarMutation();
+  const [patchUploadUserProfile] = usePatchUpdateUserProfileMutation();
   const {
     control, handleSubmit, setValue, formState: { errors, isDirty } 
   } = useForm<TSchemaProfile>({
@@ -23,14 +26,19 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
       phone: userProfile.phone || "",
       city: userProfile.city || "",
       surname: userProfile.surname || "",
-      avatar: userProfile.avatar || "",
+      avatar:  userProfile.avatar || "",
     },
     mode: "onTouched",
     resolver: zodResolver(schemaProfile),
   });
 
   const handlerOnSubmitForm: SubmitHandler<TSchemaProfile> = async (data) => {
-    console.log(data);
+    if(data.avatar && typeof data.avatar !== "string") {
+      await postLoaderAvatarUser(data.avatar as FormData);
+    }
+    delete data.avatar;
+
+    await patchUploadUserProfile(data);
   };
   
   return (

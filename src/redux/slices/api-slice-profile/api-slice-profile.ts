@@ -1,4 +1,4 @@
-import { IUser } from "@interfaces/";
+import { IRequestDataUpdateUser, IUser } from "@interfaces/";
 
 import { apiBaseSlice } from "../api-base-slice";
 
@@ -10,8 +10,29 @@ const apiSliceProfile = apiBaseSlice.injectEndpoints({
         url: "/user",
         method: "GET",
       }),
+      providesTags: ["User"],
     }),
+    postLoaderUserAvatar: builder.mutation<IUser, FormData>({
+      query: (dataForm) => ({
+        url: "/user/avatar",
+        method: "POST",
+        body: dataForm,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    patchUpdateUserProfile: builder.mutation<IUser, IRequestDataUpdateUser>({
+      query: (dataForm) => ({
+        url: "/user",
+        method: "PATCH",
+        body: { ...dataForm },
+      }),
+      invalidatesTags: ["User"],
+    })
   }),
 });
 
-export const { useGetCurrentUserProfileQuery } = apiSliceProfile;
+export const { 
+  useGetCurrentUserProfileQuery,
+  usePostLoaderUserAvatarMutation,
+  usePatchUpdateUserProfileMutation, 
+} = apiSliceProfile;

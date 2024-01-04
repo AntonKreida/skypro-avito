@@ -13,17 +13,10 @@ interface IInputProfilePhotoProps {
 export const InputProfilePhoto: FC<IInputProfilePhotoProps> = ({ control, name, setValue }) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result;
-        if (result) {
-          setValue(name, URL.createObjectURL(file), { shouldDirty: true });
-        }
-      };
-      reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append("file", file, file.name);
 
-    }
+    setValue(name, formData, { shouldDirty: true, shouldTouch: true });
   }, [name, setValue]);
 
   const {
@@ -41,7 +34,7 @@ export const InputProfilePhoto: FC<IInputProfilePhotoProps> = ({ control, name, 
     <Controller
       control={ control }
       name={ name } 
-      render={ () => (
+      render={ ({ field: { value } }) => (
         <div className="flex flex-col gap-2 items-center justify-start" { ...getRootProps() }>
           <input
             name={ name }
@@ -50,11 +43,13 @@ export const InputProfilePhoto: FC<IInputProfilePhotoProps> = ({ control, name, 
           
           />
           <div className="w-40 h-40 rounded-full overflow-hidden">
-            { acceptedFiles.length > 0
+            { acceptedFiles.length > 0 || value
               ? (
                 <img 
                   className="w-full h-full object-cover rounded-full"
-                  src={ URL.createObjectURL(acceptedFiles[0]) }
+                  src={ value
+                    ? `${import.meta.env.VITE_API_URL}/${value}`
+                    : URL.createObjectURL(acceptedFiles[0])   }
                 />
               )
               : ( <div className="w-full h-full bg-slate-200" />) }

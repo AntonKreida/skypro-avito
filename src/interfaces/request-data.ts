@@ -7,3 +7,10 @@ export interface IRequestDataForSignUpUser {
     phone?: string;
     role?: string;
 }
+
+export interface IRequestDataUpdateUser {
+    name?: string;
+    city?: string;
+    phone?: string;
+    surname?: string;
+}
