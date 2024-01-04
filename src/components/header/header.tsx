@@ -1,12 +1,15 @@
+import { MouseEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+import { ModalCreateAsd } from "@/components/modals";
 import Logo from "@assets/icon/logo-head.svg?react";
 import { useAppSelector } from "@hooks/";
 import { selectorUser } from "@redux/";
-import { Button } from "@shared/";
+import { Button, Backdrop } from "@shared/";
 
 
 export const Header = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const { isAuthUser } = useAppSelector(selectorUser);
   const navigate = useNavigate();
 
@@ -17,6 +20,15 @@ export const Header = () => {
 
   const handlerOnClickProfile = () => {
     navigate("/profile");
+  };
+
+  const handlerOnClickOpenModal = () => {
+    setIsOpenModal(true);
+  };
+
+  const handlerOnClickCloseModal = (event: MouseEvent) => {
+    event.stopPropagation();
+    setIsOpenModal(false);
   };
 
 
@@ -40,7 +52,8 @@ export const Header = () => {
         : (
           <div className="flex items-center gap-2">
             <Button 
-              sizeButton="smile" 
+              onClick={ handlerOnClickOpenModal } 
+              sizeButton="smile"
               text="Разместить объявление"
               type="button"
             />
@@ -52,6 +65,13 @@ export const Header = () => {
             />
           </div>
         ) }
+      { isOpenModal
+        ? (
+          <Backdrop onClick={ handlerOnClickCloseModal }>
+            <ModalCreateAsd onClickCloseModal={ handlerOnClickCloseModal } />
+          </Backdrop>
+        )
+        : null }
     </header>
   );
 };

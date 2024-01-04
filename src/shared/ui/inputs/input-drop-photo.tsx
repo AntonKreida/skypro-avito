@@ -4,13 +4,13 @@ import { useDropzone } from "react-dropzone";
 import { Controller, Control, UseFormSetValue } from "react-hook-form";
 
 
-interface IInputProfilePhotoProps {
+interface IInputDropPhotoProps {
     control: Control<any>;
     name: string;
     setValue: UseFormSetValue<any>;
 }
 
-export const InputProfilePhoto: FC<IInputProfilePhotoProps> = ({ control, name, setValue }) => {
+export const InputDropPhoto: FC<IInputDropPhotoProps> = ({ control, name, setValue }) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     const formData = new FormData();

@@ -5,8 +5,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { IUser } from "@interfaces/";
 import { usePatchUpdateUserProfileMutation, usePostLoaderUserAvatarMutation } from "@redux/";
 import {
-  Button, InputProfile, InputProfilePhone, InputProfilePhoto 
+  Button, InputLabel, InputLabelPhone, InputDropPhoto 
 } from "@shared/";
+
 
 import { TSchemaProfile, schemaProfile } from "./schemas";
 
@@ -46,18 +47,18 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
     <form className="flex flex-col gap-6" onSubmit={ handleSubmit(handlerOnSubmitForm) }>
       <h2 className="text-3xl font-roboto font-medium">Настройка профиля</h2>
       <div className="flex gap-14">
-        <InputProfilePhoto control={ control } name="avatar" setValue={ setValue } />
+        <InputDropPhoto control={ control } name="avatar" setValue={ setValue } />
         <div className="flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-5">
             <div className="flex gap-4 items-center w-full">
-              <InputProfile
+              <InputLabel
                 control={ control }
                 disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.name }
                 labelTitle="Имя"
                 name="name" 
               />
-              <InputProfile
+              <InputLabel
                 control={ control }
                 disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.surname }
@@ -66,7 +67,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
               />
             </div>
             <div className="flex gap-4 items-center">
-              <InputProfile
+              <InputLabel
                 control={ control }
                 disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.city }
@@ -75,12 +76,12 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
               />
             </div>
             <div className="flex gap-4 items-center w-full">
-              <InputProfilePhone
+              <InputLabelPhone
                 control={ control }
                 disabled={ isLoadingAvatar || isLoadingProfile }
                 isErrorRequestFrom={ !!errors.phone }
                 labelTitle="Телефон"
-                name="phone" 
+                name="phone"
               />
             </div>
           </div>
