@@ -6,4 +6,5 @@ export interface IUser {
     avatar: string;
     sells_from: string;
     phone: string;
+    surname: string;
   }
