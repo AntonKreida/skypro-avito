@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { FC, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { IAsd } from "@interfaces/";
 
@@ -34,7 +35,9 @@ export const TableItemAsd: FC<ITableItemAsdProps> = ({ itemAsd }) => {
       </div>
       <div className="flex flex-col gap-2 w-full">
         <div className="w-full overflow-hidden">
-          <p className="font-roboto font-medium text-xl text-blue-custom-def h-8 truncate">{ itemAsd.title }</p>
+          <Link to={ `/${itemAsd.id}` }>
+            <p className="font-roboto font-medium text-xl text-blue-custom-def h-8 truncate">{ itemAsd.title }</p>
+          </Link>
         </div>
         <div>
           <p className="font-roboto font-medium text-lg text-black">
