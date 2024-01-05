@@ -27,7 +27,9 @@ export const Backdrop: FC<IBackdropProps> = ({
     <motion.div
       animate={{ opacity: 1 }}
       className={ classNames(
-        "bg-black/50 fixed inset-0 flex items-start justify-center z-[1001] overflow-y-auto",
+        `bg-black/50 fixed inset-0 flex items-start justify-center z-[1001] overflow-y-auto
+        scrollbar-thin scrollbar-track-gray-200 scrollbar-track-rounded 
+        scrollbar-thumb-slate-400 scrollbar-thumb-rounded`,
         { "p-8": !withNoPadding }
       ) }
       exit={{ opacity: 0 }}

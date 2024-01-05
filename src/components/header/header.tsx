@@ -34,7 +34,9 @@ export const Header = () => {
 
   return (
     <header className="
-    flex items-center justify-between w-full p-5 fixed left-0 top-0 h-20 bg-blue-custom-def rounded-b z-[1000]"
+    flex items-center justify-between w-full 
+    p-5 fixed left-0 top-0 h-20 
+    bg-blue-custom-def rounded-b z-[1000] shadow-md"
     >
       <Link className="w-fit h-fit" to="/">
         <Logo className="w-32 h-10" />

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 
 
@@ -59,5 +60,5 @@ FetchBaseQueryError
 export const apiBaseSlice = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-  tagTypes: ["Ads", "User", "AdsUser"],
+  tagTypes: ["Ads", "User", "AdsUser", "Ad", "AdComment"],
 });
