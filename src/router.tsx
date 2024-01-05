@@ -3,7 +3,12 @@ import { Routes, Route } from "react-router-dom";
 import { ProtectedAuth } from "@hocs/";
 import { ContainerAuth, ContainerMain } from "@layouts/";
 import {
-  Login, SignUp, Home, Profile, Ad
+  Login, 
+  SignUp, 
+  Home, 
+  Profile, 
+  Ad, 
+  Salesman,
 } from "@pages/";
 
 
@@ -20,6 +25,7 @@ export const AppRouter = () => (
         <Route element={ <Profile /> } path="/profile" />
       </Route>
       <Route element={ <Ad /> } path="/:idAd" />
+      <Route element={ <Salesman /> } path="/:idAd/:idSalesman" />
     </Route>
   </Routes>
 );

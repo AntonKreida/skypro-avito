@@ -11,12 +11,13 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { sliceUser, apiBaseSlice } from "../slices";
+import { sliceUser, apiBaseSlice, sliceSalesman } from "../slices";
 
 
 const rootReducer = combineReducers({
   [apiBaseSlice.reducerPath]: apiBaseSlice.reducer,
   user: sliceUser.reducer,
+  salesman: sliceSalesman.reducer,
 });
 
 const persistConfig = {
