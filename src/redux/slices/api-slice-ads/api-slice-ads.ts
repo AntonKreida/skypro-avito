@@ -10,6 +10,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         url: "/ads",
         method: "GET",
       }),
+      providesTags: ["AdsUser"],
     }),
     getAdsUser: builder.query<IAsd[], null>({
       query: () => ({

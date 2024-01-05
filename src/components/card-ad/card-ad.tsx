@@ -46,7 +46,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
 
 
   return (
-    <div className="grid grid-cols-2 w-full gap-14">
+    <div className="grid grid-cols-2 w-full gap-14 overflow-x-hidden">
       <SliderCard slidersList={ dataAd.images } />
       <div className="flex flex-col gap-9">
         <div className="flex flex-col gap-2">
@@ -157,6 +157,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           >
             <ModalComment 
               commentList={ dataCommentsAd }
+              dataAd={ dataAd }
               onClickCloseModal={ handlerOnClickCloseModal }
             />
           </Backdrop>
