@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 import { ModalComment } from "@/components/modals";
 import { SliderCard } from "@/components/sliders/slider-card";
 import { useAppDispatch } from "@hooks/";
-import { IAsd, IComment } from "@interfaces/";
+import { IAsd, IComment, IUser } from "@interfaces/";
 import { setCurrentSalesman, useGetCurrentUserProfileQuery } from "@redux/";
-import { Backdrop, hidePhoneUser } from "@shared/";
+import { Backdrop, Button, hidePhoneUser } from "@shared/";
 
 
 interface ICardAdProps {
@@ -38,7 +38,6 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
     event.stopPropagation();
     setIsOpenModalComment(false);
   };
-
 
   useEffect(() => {
     dispatch( setCurrentSalesman(dataAd.user));
@@ -82,35 +81,55 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               maximumFractionDigits: 0
             }) }
           </p>
-          { !isShowOpenPhone && hidePhoneCurrentUserAd
+          { data?.id !== dataAd.user_id
             ? (
-              (
-                <button 
-                  className="px-8 py-3 w-fit
-                  disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
-                  text-white font-roboto font-normal text-base rounded-md
-                  focus:outline-none active:scale-90 transition
-                  disabled:text-gray-600 disabled:cursor-default disabled:scale-100"
-                  onClick={ () => setIsShowOpenPhone(true) }
-                >
-                  <p>Показать номер телефона</p>
-                  <p>{ hidePhoneCurrentUserAd?.hidePhone }</p>
-                </button>
-              )
+              <div>
+                { !isShowOpenPhone && hidePhoneCurrentUserAd 
+                  ? (
+                    (
+                      <button 
+                        className="px-8 py-3 w-fit
+                    disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
+                    text-white font-roboto font-normal text-base rounded-md
+                    focus:outline-none active:scale-90 transition
+                    disabled:text-gray-600 disabled:cursor-default disabled:scale-100"
+                        onClick={ () => setIsShowOpenPhone(true) }
+                      >
+                        <p>Показать номер телефона</p>
+                        <p>{ hidePhoneCurrentUserAd?.hidePhone }</p>
+                      </button>
+                    )
+                  )
+                  : (
+                    <a 
+                      className="px-8 py-3 text-center w-fit
+                    disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
+                    text-white font-roboto font-normal text-base rounded-md
+                    focus:outline-none active:scale-90 transition
+                    disabled:text-gray-600 disabled:cursor-default disabled:scale-100"
+                      href={ `tel:${ hidePhoneCurrentUserAd?.showPhone }` }
+                    >
+                      <p>Позвонить по телефону</p>
+                      <p>{ hidePhoneCurrentUserAd?.showPhone }</p>
+                    </a>
+                  ) }
+              </div>
             )
             : (
-              <a 
-                className="px-8 py-3 text-center w-fit
-                  disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
-                  text-white font-roboto font-normal text-base rounded-md
-                  focus:outline-none active:scale-90 transition
-                  disabled:text-gray-600 disabled:cursor-default disabled:scale-100"
-                href={ `tel:${ hidePhoneCurrentUserAd?.showPhone }` }
-              >
-                <p>Позвонить по телефону</p>
-                <p>{ hidePhoneCurrentUserAd?.showPhone }</p>
-              </a>
+              <div className="flex items-center gap-3">
+                <Button
+                  className="w-fit"
+                  text="Редактировать"
+                  type="button"
+                />
+                <Button
+                  className="w-fit"
+                  text="Снять с публикации"
+                  type="button"
+                />
+              </div>
             ) }
+          
         </div>
         <Link 
           className="flex w-fit gap-3 items-center"
@@ -158,6 +177,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
             <ModalComment 
               commentList={ dataCommentsAd }
               dataAd={ dataAd }
+              dataUser={ data as IUser }
               onClickCloseModal={ handlerOnClickCloseModal }
             />
           </Backdrop>
