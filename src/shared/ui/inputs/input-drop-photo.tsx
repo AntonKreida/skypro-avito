@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FC, useCallback } from "react";
+import {
+  FC, useCallback,
+} from "react";
 import { useDropzone } from "react-dropzone";
 import { Controller, Control, UseFormSetValue } from "react-hook-form";
 
@@ -8,9 +10,12 @@ interface IInputDropPhotoProps {
     control: Control<any>;
     name: string;
     setValue: UseFormSetValue<any>;
+    maxFiles: number;
 }
 
-export const InputDropPhoto: FC<IInputDropPhotoProps> = ({ control, name, setValue }) => {
+export const InputDropPhoto: FC<IInputDropPhotoProps> = ({
+  control, name, setValue, maxFiles = 1 
+}) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     const formData = new FormData();
@@ -24,11 +29,13 @@ export const InputDropPhoto: FC<IInputDropPhotoProps> = ({ control, name, setVal
   } = useDropzone({
     onDrop,
     noClick: true,
+    maxFiles: maxFiles,
     accept: {
       "image/jpeg": [],
       "image/png": []
-    }
+    },
   });
+
 
   return (
     <Controller

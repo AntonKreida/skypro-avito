@@ -17,9 +17,9 @@ export const Backdrop: FC<IBackdropProps> = ({
   onClick,
 }) => {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflowY = "hidden";
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflowY = "unset";
     };
   }, []);
 

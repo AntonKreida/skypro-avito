@@ -4,9 +4,9 @@ import { FC, MouseEventHandler } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { selectorSalesman, selectorUser, usePostCreateAdCommentMutation } from "@/redux";
+import { selectorUser, usePostCreateAdCommentMutation } from "@/redux";
 import { useAppSelector } from "@hooks/";
-import { IAsd, IComment } from "@interfaces/";
+import { IAsd, IComment, IUser } from "@interfaces/";
 import { Button, TextareaLabel } from "@shared/";
 
 import { TSchemaComment, schemaComment } from "./schema/schema-comment";
@@ -17,11 +17,13 @@ interface IModalCommentProps {
     commentList: IComment[];
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
     dataAd: IAsd;
+    dataUser: IUser;
 }
 
-export const ModalComment: FC<IModalCommentProps> = ({ commentList, onClickCloseModal, dataAd }) => {
+export const ModalComment: FC<IModalCommentProps> = ({
+  commentList, onClickCloseModal, dataAd, dataUser 
+}) => {
   const { isAuthUser } = useAppSelector(selectorUser);
-  const salesmanData = useAppSelector(selectorSalesman);
   const params = useParams();
   const { control, handleSubmit, formState: { errors, isDirty } } = useForm({
     defaultValues: {
@@ -61,7 +63,7 @@ export const ModalComment: FC<IModalCommentProps> = ({ commentList, onClickClose
           </button>
         </div>
 
-        { isAuthUser || salesmanData.id !== dataAd.user_id
+        { isAuthUser || dataUser.id !== dataAd.user_id
           ? (
             <form 
               className="w-full h-full flex flex-col gap-3"

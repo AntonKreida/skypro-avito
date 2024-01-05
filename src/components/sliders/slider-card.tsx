@@ -19,7 +19,7 @@ export const SliderCard: FC<ISliderCardProps> = ({ slidersList }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-3 w-full overflow-hidden">
       <Swiper
         className="w-full h-full"
         modules={ [Thumbs] }

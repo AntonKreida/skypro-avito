@@ -1,11 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
-import { FC, useCallback, useState } from "react";
+import {
+  Dispatch, FC, SetStateAction, useCallback, useState 
+} from "react";
 import { useDropzone } from "react-dropzone";
 import { Controller, Control, UseFormSetValue } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
+
+type TImages = {
+  id: number;
+  ad_id: number;
+  url: string;
+}
 
 interface IInputDropLabelPhotoProps {
     control: Control<any>;
@@ -14,15 +22,27 @@ interface IInputDropLabelPhotoProps {
     addStylesLabel?: string
     labelTitle: string;
     subLabelTitle?: string;
+    maxFiles: number;
+    imagesListDefault?: TImages[];
+    setImagesForDelete?: Dispatch<SetStateAction<TImages[]>>;
 }
 
 export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
-  control, name, setValue, addStylesLabel, labelTitle, subLabelTitle, 
+  control, 
+  name, 
+  setValue, 
+  addStylesLabel, 
+  labelTitle, 
+  subLabelTitle, 
+  maxFiles = 5, 
+  imagesListDefault,
+  setImagesForDelete,
 }) => {
   const [listFilesItems, setListFilesItems] = useState<File[]>([]);
+  const [imagesDefaultValue, setImagesDefaultValue] = useState<TImages[]>(imagesListDefault || []);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const files = acceptedFiles.slice(0, 5 - listFilesItems.length);
+    const files = acceptedFiles;
 
     setListFilesItems((prev) => [...prev, ...files]);
     
@@ -34,12 +54,15 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
     }, []);
 
     setValue(name, listFormData, { shouldDirty: true, shouldTouch: true });
-  }, [listFilesItems.length, name, setValue]);
+  }, [name, setValue]);
 
   const {
     getInputProps, open 
   } = useDropzone({
     onDrop,
+    maxFiles: maxFiles - (imagesDefaultValue
+      ? imagesDefaultValue.length + 1
+      : 0),
     noClick: true,
     accept: {
       "image/jpeg": [],
@@ -47,8 +70,13 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
     }
   });
 
-  const handlerOnClickOnDeleteFile = (index: number) => {
+  const handlerOnClickDeleteFile = (index: number) => {
     setListFilesItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handlerOnClickDeleteDefaultValue = (index: number) => {
+    setImagesDefaultValue((prev) => prev?.filter((_, i) => i !== index));
+    setImagesForDelete?.((prev) => [...prev, imagesDefaultValue[index]]);
   };
 
   return (
@@ -76,6 +104,24 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
           />
 
           <div className="w-full flex gap-2">
+            { imagesDefaultValue?.map((image, index) => (
+              <div 
+                className="w-24 h-24 rounded-md overflow-hidden relative group"
+                key={ index }
+              >
+                <img 
+                  className="w-full h-full object-cover rounded-md"
+                  src={ `${import.meta.env.VITE_API_URL}/${image.url}` }
+                />
+                <button 
+                  className="absolute right-1 top-1 group-hover:block hidden active:scale-[0.8] transition"
+                  onClick={ () => handlerOnClickDeleteDefaultValue(index) }
+                  type="button"
+                >
+                  <XMarkIcon className="w-5 h-5 stroke-gray-300" />
+                </button>
+              </div>
+            )) }
             { listFilesItems.map((file, index) => (
               <div 
                 className="w-24 h-24 rounded-md overflow-hidden relative group"
@@ -87,14 +133,18 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
                 />
                 <button 
                   className="absolute right-1 top-1 group-hover:block hidden active:scale-[0.8] transition"
-                  onClick={ () => handlerOnClickOnDeleteFile(index) }
+                  onClick={ () => handlerOnClickDeleteFile(index) }
                   type="button"
                 >
-                  <XMarkIcon className="w-5 h-5 stroke-black-400 " />
+                  <XMarkIcon className="w-5 h-5 stroke-gray-400" />
                 </button>
               </div>
             )) }
-            { Array.from({ length: 5 - listFilesItems.length }).map((_, index) => (
+            { Array.from({
+              length: 5 - listFilesItems.length - (imagesDefaultValue
+                ? imagesDefaultValue.length
+                : 0)
+            }).map((_, index) => (
               <div 
                 className="w-24 h-24 bg-slate-100 flex justify-center rounded-md items-center"
                 key={ index }
