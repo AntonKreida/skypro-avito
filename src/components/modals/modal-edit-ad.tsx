@@ -1,12 +1,15 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Dispatch, FC, MouseEventHandler, SetStateAction, useEffect 
+  Dispatch, FC, MouseEventHandler, SetStateAction, useEffect , useState
 } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import RubIcon from "@assets/icon/rub.svg?react";
-import { usePostCreateAdsImageMutation, usePostCreateAdsTextMutation } from "@redux/";
+import { IAsd } from "@interfaces/";
+import {
+  useDeleteImagesAdMutation, usePatchCurrentAdMutation, usePostCreateAdsImageMutation 
+} from "@redux/";
 import {
   Button, InputDropLabelPhoto, InputLabel, TextareaLabel 
 } from "@shared/";
@@ -14,19 +17,35 @@ import {
 import { TSchemaCreateAsd, schemaCreateAsd } from "./schema/schema-create-asd";
 
 
-interface IModalCreateAsdProps {
+type TImages = {
+    id: number;
+    ad_id: number;
+    url: string;
+  }
+
+interface IModalEditAdProps {
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
     setIsOpenModal: Dispatch<SetStateAction<boolean>>
+    dataAd: IAsd
 }
 
-export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
+export const ModalEditAd: FC<IModalEditAdProps> = ({ onClickCloseModal, setIsOpenModal, dataAd }) => {
+  const [imagesForDelete, setImagesForDelete] = useState<TImages[]>([]);
+  const [patchCurrentAd, 
+    { isLoading: isLoadingAd, isSuccess: isSuccessAd }] 
+    = usePatchCurrentAdMutation();
+  const [deleteImagesCurrentAd, 
+    { isLoading: isLoadingDelete, isSuccess: isSuccessDelete }] 
+    = useDeleteImagesAdMutation();
+
+
   const {
-    control, setValue, handleSubmit, formState: { errors, isDirty } 
+    control, setValue, handleSubmit, formState: { errors } 
   } = useForm<TSchemaCreateAsd>({
     defaultValues: {
-      title: "",
-      description: "",
-      price: 0,
+      title: dataAd.title || "",
+      description: dataAd.description || "",
+      price: dataAd.price || 0,
       files: null,
     },
     mode: "onTouched",
@@ -34,27 +53,34 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
   });
 
   const [
-    postCreateAsdText, 
-    { isLoading: isLoadingText, isSuccess: isSuccessText }
-  ] = usePostCreateAdsTextMutation();
-  const [
     postCreateAsdImage, 
     { isLoading: isLoadingImage, isSuccess: isSuccessImage }
   ] = usePostCreateAdsImageMutation();
 
   const handlerOnSubmitForm: SubmitHandler<TSchemaCreateAsd> = async (data) => {
-    const dataForCreateAsd = {
+    const dataForEditAsd = {
+      id: dataAd.id,
       title: data.title,
       description: data.description,
       price: data.price,
     };
 
-    const newAsd = await postCreateAsdText(dataForCreateAsd).unwrap();
+    if(imagesForDelete.length) {
+      imagesForDelete.forEach  ( (async (image) => {
+        const dataForDelete = {
+          idAd: dataAd.id,
+          imgUrl: image.url
+        };
+        await deleteImagesCurrentAd(dataForDelete);
+      }));
+    }
 
-    if(data.files && typeof data.files !== "string" && newAsd) {
+    const updateAd = await patchCurrentAd(dataForEditAsd).unwrap();
+
+    if(data.files && typeof data.files !== "string" && updateAd) {
       data.files.forEach(async (file) => {
         const dataForAddImage = {
-          id: newAsd.id,
+          id: updateAd.id,
           files: file,
         };
     
@@ -65,11 +91,10 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
 
   
   useEffect(() => {
-    if((isSuccessText && isSuccessImage) || isSuccessImage) {
+    if(isSuccessImage || isSuccessAd || isSuccessDelete) {
       setIsOpenModal(false);
     }
-  }, [isSuccessText, isSuccessImage, setIsOpenModal]);
-
+  }, [isSuccessAd, isSuccessDelete, isSuccessImage, setIsOpenModal]);
 
   return (
     <div 
@@ -92,7 +117,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
         <InputLabel 
           addStylesLabel="text-black"
           control={ control }
-          disabled={ isLoadingText || isLoadingImage }
+          disabled={ isLoadingAd || isLoadingImage || isLoadingDelete }
           isErrorRequestFrom={ !!errors.title }
           labelTitle="Название"
           name="title"
@@ -101,7 +126,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
         <TextareaLabel
           addStylesLabel="text-black"
           control={ control }
-          disabled={ isLoadingText || isLoadingImage }
+          disabled={ isLoadingAd || isLoadingImage || isLoadingDelete }
           isErrorRequestFrom={ !!errors.description }
           labelTitle="Описание"
           name="description"
@@ -110,9 +135,11 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
         <InputDropLabelPhoto 
           addStylesLabel="text-black" 
           control={ control }
+          imagesListDefault={ dataAd.images }
           labelTitle="Фотографии товара"
           maxFiles={ 5 }
           name="files"
+          setImagesForDelete={ setImagesForDelete }
           setValue={ setValue }
           subLabelTitle="не более 5"
         />
@@ -120,7 +147,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
           addStyleInput="pr-9"
           addStylesLabel="text-black w-fit"
           control={ control }
-          disabled={ isLoadingText || isLoadingImage }
+          disabled={ isLoadingAd || isLoadingImage || isLoadingDelete }
           icon={ <RubIcon className="w-5 h-5 absolute top-1/2 right-4 -translate-y-1/2" /> }
           isErrorRequestFrom={ !!errors.price }
           labelTitle="Укажите цену"
@@ -129,7 +156,6 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
         />
         <Button 
           className="w-fit"
-          disabled={ !isDirty }
           text="Создать"
           type="submit"
         />

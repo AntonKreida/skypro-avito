@@ -47,7 +47,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
     <form className="flex flex-col gap-6 px-14" onSubmit={ handleSubmit(handlerOnSubmitForm) }>
       <h2 className="text-3xl font-roboto font-medium">Настройка профиля</h2>
       <div className="flex gap-14">
-        <InputDropPhoto control={ control } name="avatar" setValue={ setValue } />
+        <InputDropPhoto control={ control } maxFiles={ 1 } name="avatar" setValue={ setValue } />
         <div className="flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-5">
             <div className="flex gap-4 items-center w-full">

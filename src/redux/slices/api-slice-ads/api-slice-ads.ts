@@ -33,7 +33,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         method: "POST",
         body: dataForm.files,
       }),
-      invalidatesTags: ["AdsUser", "Ads"],
+      invalidatesTags: ["AdsUser", "Ads", "Ad"],
     }),
     getAdsSalesman: builder.query<IAsd[], string | number>({
       query: (idSalesman) => ({

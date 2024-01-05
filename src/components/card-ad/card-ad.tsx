@@ -6,12 +6,14 @@ import {
 } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ModalComment } from "@/components/modals";
+import { ModalComment, ModalEditAd } from "@/components/modals";
 import { SliderCard } from "@/components/sliders/slider-card";
 import { useAppDispatch } from "@hooks/";
 import { IAsd, IComment, IUser } from "@interfaces/";
 import { setCurrentSalesman, useDeleteAdsMutation, useGetCurrentUserProfileQuery } from "@redux/";
-import { Backdrop, Button, hidePhoneUser } from "@shared/";
+import {
+  Backdrop, Button, hidePhoneUser 
+} from "@shared/";
 
 
 interface ICardAdProps {
@@ -33,6 +35,8 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
   const [isOpenModalComment, setIsOpenModalComment] = useState(false);
   const hidePhoneCurrentUserAd = useMemo(() => hidePhoneUser(dataAd.user.phone), [dataAd.user.phone]);
 
+  const [isOpenModalEditAd, setIsOpenModalEditAd] = useState(false);
+
   const handlerOnClickOpenModal = () => {
     setIsOpenModalComment(true);
   };
@@ -41,6 +45,16 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
     event.stopPropagation();
     setIsOpenModalComment(false);
   };
+
+  const handlerOnClickOpenModalEditAd = () => {
+    setIsOpenModalEditAd(true);
+  };
+
+  const handlerOnClickCloseModalEditAd = (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsOpenModalEditAd(false);
+  };
+
 
   const handlerDeleteAd = async () => {
     await deleteAd(dataAd.id).unwrap();
@@ -58,10 +72,11 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
     }
   }, [isSuccess, navigate]);
 
-
   return (
     <div className="grid grid-cols-2 w-full gap-14 overflow-x-hidden">
-      <SliderCard slidersList={ dataAd.images } />
+      { dataAd.images.length > 0
+        ? (<SliderCard slidersList={ dataAd.images } />)
+        : <div className="w-full h-full bg-slate-400" /> }
       <div className="flex flex-col gap-9">
         <div className="flex flex-col gap-2">
           <h2 className="font-roboto font-bold text-3xl">{ dataAd.title }</h2>
@@ -134,6 +149,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               <div className="flex items-center gap-3">
                 <Button
                   className="w-fit"
+                  onClick={ handlerOnClickOpenModalEditAd }
                   text="Редактировать"
                   type="button"
                 />
@@ -195,6 +211,19 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               dataAd={ dataAd }
               dataUser={ data as IUser }
               onClickCloseModal={ handlerOnClickCloseModal }
+            />
+          </Backdrop>
+        )
+        : null }
+      { isOpenModalEditAd
+        ? (
+          <Backdrop 
+            onClick={ handlerOnClickCloseModal }
+          >
+            <ModalEditAd 
+              dataAd={ dataAd }
+              onClickCloseModal={ handlerOnClickCloseModalEditAd }
+              setIsOpenModal={ setIsOpenModalEditAd }
             />
           </Backdrop>
         )

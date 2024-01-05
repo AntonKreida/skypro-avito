@@ -28,6 +28,29 @@ const apiSliceAd = apiBaseSlice.injectEndpoints({
         },
       }),
       invalidatesTags: ["AdComment"],
+    }),
+    deleteImagesAd: builder.mutation<IAsd, {
+      idAd: string | number;
+      imgUrl: string;
+    }>({
+      query: (data) => ({
+        url: `/ads/${data.idAd}/image?file_url=${data.imgUrl}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Ad"],
+    }),
+    patchCurrentAd: builder.mutation<IAsd, {
+      id: number | string;
+      title?: string;
+      description?: string;
+      price?: number;
+    }>({
+      query: (data) => ({
+        url: `/ads/${data.id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Ad"],
     })
   })
 });
@@ -36,4 +59,6 @@ export const {
   useGetAdQuery,
   useGetAdCommentQuery,
   usePostCreateAdCommentMutation,
+  useDeleteImagesAdMutation,
+  usePatchCurrentAdMutation,
 } = apiSliceAd;
