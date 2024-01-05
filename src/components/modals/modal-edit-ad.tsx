@@ -14,7 +14,7 @@ import {
   Button, InputDropLabelPhoto, InputLabel, TextareaLabel 
 } from "@shared/";
 
-import { TSchemaCreateAsd, schemaCreateAsd } from "./schema/schema-create-asd";
+import { TSchemaCreateEditAd, schemaCreateEditAd } from "./schema/schema-create-edit-ad";
 
 
 type TImages = {
@@ -41,7 +41,7 @@ export const ModalEditAd: FC<IModalEditAdProps> = ({ onClickCloseModal, setIsOpe
 
   const {
     control, setValue, handleSubmit, formState: { errors } 
-  } = useForm<TSchemaCreateAsd>({
+  } = useForm<TSchemaCreateEditAd>({
     defaultValues: {
       title: dataAd.title || "",
       description: dataAd.description || "",
@@ -49,7 +49,7 @@ export const ModalEditAd: FC<IModalEditAdProps> = ({ onClickCloseModal, setIsOpe
       files: null,
     },
     mode: "onTouched",
-    resolver: zodResolver(schemaCreateAsd),
+    resolver: zodResolver(schemaCreateEditAd),
   });
 
   const [
@@ -57,7 +57,7 @@ export const ModalEditAd: FC<IModalEditAdProps> = ({ onClickCloseModal, setIsOpe
     { isLoading: isLoadingImage, isSuccess: isSuccessImage }
   ] = usePostCreateAdsImageMutation();
 
-  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateAsd> = async (data) => {
+  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateEditAd> = async (data) => {
     const dataForEditAsd = {
       id: dataAd.id,
       title: data.title,

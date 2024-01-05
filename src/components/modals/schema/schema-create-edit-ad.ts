@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 
-export const schemaCreateAsd = z.object({
+export const schemaCreateEditAd = z.object({
   title: z.string({ required_error: "Укажите название" })
     .min(1, { message: "Укажите название" }),
   description: z.string({ required_error: "Укажите описание" })
@@ -19,4 +19,4 @@ export const schemaCreateAsd = z.object({
   path: ["files"],
 });
 
-export type TSchemaCreateAsd = z.infer<typeof schemaCreateAsd>;
+export type TSchemaCreateEditAd = z.infer<typeof schemaCreateEditAd>;

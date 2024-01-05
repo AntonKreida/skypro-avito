@@ -11,18 +11,18 @@ import {
   Button, InputDropLabelPhoto, InputLabel, TextareaLabel 
 } from "@shared/";
 
-import { TSchemaCreateAsd, schemaCreateAsd } from "./schema/schema-create-asd";
+import { TSchemaCreateEditAd, schemaCreateEditAd } from "./schema/schema-create-edit-ad";
 
 
-interface IModalCreateAsdProps {
+interface IModalCreateAdProps {
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
     setIsOpenModal: Dispatch<SetStateAction<boolean>>
 }
 
-export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
+export const ModalCreateAd: FC<IModalCreateAdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
   const {
     control, setValue, handleSubmit, formState: { errors, isDirty } 
-  } = useForm<TSchemaCreateAsd>({
+  } = useForm<TSchemaCreateEditAd>({
     defaultValues: {
       title: "",
       description: "",
@@ -30,7 +30,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
       files: null,
     },
     mode: "onTouched",
-    resolver: zodResolver(schemaCreateAsd),
+    resolver: zodResolver(schemaCreateEditAd),
   });
 
   const [
@@ -42,7 +42,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
     { isLoading: isLoadingImage, isSuccess: isSuccessImage }
   ] = usePostCreateAdsImageMutation();
 
-  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateAsd> = async (data) => {
+  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateEditAd> = async (data) => {
     const dataForCreateAsd = {
       title: data.title,
       description: data.description,

@@ -113,7 +113,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           </p>
           { data?.id !== dataAd.user_id
             ? (
-              <div>
+              <div className="flex">
                 { !isShowOpenPhone && hidePhoneCurrentUserAd 
                   ? (
                     (
@@ -132,7 +132,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
                   )
                   : (
                     <a 
-                      className="px-8 py-3 text-center w-fit
+                      className="px-8 py-3 text-center w-fit h-fit
                     disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
                     text-white font-roboto font-normal text-base rounded-md
                     focus:outline-none active:scale-90 transition
