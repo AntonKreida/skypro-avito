@@ -4,9 +4,9 @@ import { FC, MouseEventHandler } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { selectorUser, usePostCreateAdCommentMutation } from "@/redux";
+import { selectorSalesman, selectorUser, usePostCreateAdCommentMutation } from "@/redux";
 import { useAppSelector } from "@hooks/";
-import { IComment } from "@interfaces/";
+import { IAsd, IComment } from "@interfaces/";
 import { Button, TextareaLabel } from "@shared/";
 
 import { TSchemaComment, schemaComment } from "./schema/schema-comment";
@@ -16,10 +16,12 @@ import { CommentItem } from "./ui";
 interface IModalCommentProps {
     commentList: IComment[];
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
+    dataAd: IAsd;
 }
 
-export const ModalComment: FC<IModalCommentProps> = ({ commentList, onClickCloseModal }) => {
+export const ModalComment: FC<IModalCommentProps> = ({ commentList, onClickCloseModal, dataAd }) => {
   const { isAuthUser } = useAppSelector(selectorUser);
+  const salesmanData = useAppSelector(selectorSalesman);
   const params = useParams();
   const { control, handleSubmit, formState: { errors, isDirty } } = useForm({
     defaultValues: {
@@ -59,7 +61,7 @@ export const ModalComment: FC<IModalCommentProps> = ({ commentList, onClickClose
           </button>
         </div>
 
-        { isAuthUser
+        { isAuthUser || salesmanData.id !== dataAd.user_id
           ? (
             <form 
               className="w-full h-full flex flex-col gap-3"

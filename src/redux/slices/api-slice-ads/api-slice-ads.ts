@@ -10,6 +10,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         url: "/ads",
         method: "GET",
       }),
+      providesTags: ["AdsUser"],
     }),
     getAdsUser: builder.query<IAsd[], null>({
       query: () => ({
@@ -33,6 +34,12 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         body: dataForm.files,
       }),
       invalidatesTags: ["AdsUser"],
+    }),
+    getAdsSalesman: builder.query<IAsd[], string | number>({
+      query: (idSalesman) => ({
+        url: `/ads?user_id=${idSalesman}`,
+        method: "GET",
+      }),
     })
   }),
 });
@@ -40,6 +47,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
 export const {
   useGetAdsQuery, 
   useGetAdsUserQuery, 
+  useGetAdsSalesmanQuery,
   usePostCreateAdsTextMutation, 
-  usePostCreateAdsImageMutation 
+  usePostCreateAdsImageMutation,
 } = apiSliceAds;

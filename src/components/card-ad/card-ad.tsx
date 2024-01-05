@@ -2,15 +2,16 @@ import { formatDistanceToNow } from "date-fns";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import {
-  FC, MouseEvent, useMemo, useState 
+  FC, MouseEvent, useMemo, useState, useEffect, 
 } from "react";
+import { Link } from "react-router-dom";
 
 import { ModalComment } from "@/components/modals";
 import { SliderCard } from "@/components/sliders/slider-card";
+import { useAppDispatch } from "@hooks/";
 import { IAsd, IComment } from "@interfaces/";
-import { Backdrop } from "@shared/";
-
-import { hidePhoneUser } from "./util";
+import { setCurrentSalesman, useGetCurrentUserProfileQuery } from "@redux/";
+import { Backdrop, hidePhoneUser } from "@shared/";
 
 
 interface ICardAdProps {
@@ -20,6 +21,10 @@ interface ICardAdProps {
 
 
 export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
+  const dispatch = useAppDispatch();
+  const { data } = useGetCurrentUserProfileQuery(null);
+
+
   const [isShowOpenPhone, setIsShowOpenPhone] = useState(false);
   const [isErrorLoadingAvatarUser, setIsErrorLoadingAvatarUser] = useState(false);
   const [isOpenModalComment, setIsOpenModalComment] = useState(false);
@@ -35,8 +40,13 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
   };
 
 
+  useEffect(() => {
+    dispatch( setCurrentSalesman(dataAd.user));
+  }, [dataAd, dispatch]);
+
+
   return (
-    <div className="grid grid-cols-2 w-full gap-14">
+    <div className="grid grid-cols-2 w-full gap-14 overflow-x-hidden">
       <SliderCard slidersList={ dataAd.images } />
       <div className="flex flex-col gap-9">
         <div className="flex flex-col gap-2">
@@ -102,7 +112,12 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               </a>
             ) }
         </div>
-        <div className="flex w-fit gap-3 items-center">
+        <Link 
+          className="flex w-fit gap-3 items-center"
+          to={ data?.id !== dataAd.user_id
+            ?  `/${dataAd.id}/${dataAd.user_id}`
+            : "/profile" }
+        >
           <div className="w-10 h-10 relative rounded-full border border-black overflow-hidden">
             <img
               alt="avatar"
@@ -124,7 +139,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               })}` }
             </p>
           </div>
-        </div>
+        </Link>
       </div>
       { !!dataAd.description && (
         <div className="col-span-2 ">
@@ -142,6 +157,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           >
             <ModalComment 
               commentList={ dataCommentsAd }
+              dataAd={ dataAd }
               onClickCloseModal={ handlerOnClickCloseModal }
             />
           </Backdrop>
