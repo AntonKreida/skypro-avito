@@ -10,7 +10,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         url: "/ads",
         method: "GET",
       }),
-      providesTags: ["AdsUser"],
+      providesTags: ["AdsUser", "Ads"],
     }),
     getAdsUser: builder.query<IAsd[], null>({
       query: () => ({
@@ -25,7 +25,7 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         method: "POST",
         body: { ...dataForm },
       }),
-      invalidatesTags: ["AdsUser"],
+      invalidatesTags: ["AdsUser", "Ads"],
     }),
     postCreateAdsImage: builder.mutation<IAsd, IRequestCreateAsdImages>({
       query: (dataForm) => ({
@@ -33,13 +33,20 @@ const apiSliceAds = apiBaseSlice.injectEndpoints({
         method: "POST",
         body: dataForm.files,
       }),
-      invalidatesTags: ["AdsUser"],
+      invalidatesTags: ["AdsUser", "Ads"],
     }),
     getAdsSalesman: builder.query<IAsd[], string | number>({
       query: (idSalesman) => ({
         url: `/ads?user_id=${idSalesman}`,
         method: "GET",
       }),
+    }),
+    deleteAds: builder.mutation<IAsd, string | number>({
+      query: (id) => ({
+        url: `/ads/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AdsUser", "Ads", "Ad"],
     })
   }),
 });
@@ -50,4 +57,5 @@ export const {
   useGetAdsSalesmanQuery,
   usePostCreateAdsTextMutation, 
   usePostCreateAdsImageMutation,
+  useDeleteAdsMutation,
 } = apiSliceAds;

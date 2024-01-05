@@ -4,13 +4,13 @@ import { ru } from "date-fns/locale";
 import {
   FC, MouseEvent, useMemo, useState, useEffect, 
 } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { ModalComment } from "@/components/modals";
 import { SliderCard } from "@/components/sliders/slider-card";
 import { useAppDispatch } from "@hooks/";
 import { IAsd, IComment, IUser } from "@interfaces/";
-import { setCurrentSalesman, useGetCurrentUserProfileQuery } from "@redux/";
+import { setCurrentSalesman, useDeleteAdsMutation, useGetCurrentUserProfileQuery } from "@redux/";
 import { Backdrop, Button, hidePhoneUser } from "@shared/";
 
 
@@ -21,8 +21,11 @@ interface ICardAdProps {
 
 
 export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { data } = useGetCurrentUserProfileQuery(null);
+  const [deleteAd, { isSuccess }] = useDeleteAdsMutation();
 
 
   const [isShowOpenPhone, setIsShowOpenPhone] = useState(false);
@@ -39,9 +42,21 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
     setIsOpenModalComment(false);
   };
 
+  const handlerDeleteAd = async () => {
+    await deleteAd(dataAd.id).unwrap();
+  };
+
   useEffect(() => {
     dispatch( setCurrentSalesman(dataAd.user));
   }, [dataAd, dispatch]);
+
+  useEffect(() => {
+    if(isSuccess) {
+      navigate("/");
+    } else {
+      setIsErrorLoadingAvatarUser(true);
+    }
+  }, [isSuccess, navigate]);
 
 
   return (
@@ -124,6 +139,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
                 />
                 <Button
                   className="w-fit"
+                  onClick={ handlerDeleteAd }
                   text="Снять с публикации"
                   type="button"
                 />
