@@ -1,10 +1,14 @@
 import { formatDistanceToNow } from "date-fns";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { FC, useMemo, useState } from "react";
+import {
+  FC, MouseEvent, useMemo, useState 
+} from "react";
 
+import { ModalComment } from "@/components/modals";
 import { SliderCard } from "@/components/sliders/slider-card";
 import { IAsd, IComment } from "@interfaces/";
+import { Backdrop } from "@shared/";
 
 import { hidePhoneUser } from "./util";
 
@@ -17,8 +21,18 @@ interface ICardAdProps {
 
 export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
   const [isShowOpenPhone, setIsShowOpenPhone] = useState(false);
-  const [isErrorLoadingAvatarUser, setIsErrorLoadingAvatartUser] = useState(false);
+  const [isErrorLoadingAvatarUser, setIsErrorLoadingAvatarUser] = useState(false);
+  const [isOpenModalComment, setIsOpenModalComment] = useState(false);
   const hidePhoneCurrentUserAd = useMemo(() => hidePhoneUser(dataAd.user.phone), [dataAd.user.phone]);
+
+  const handlerOnClickOpenModal = () => {
+    setIsOpenModalComment(true);
+  };
+
+  const handlerOnClickCloseModal = (event: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsOpenModalComment(false);
+  };
 
 
   return (
@@ -34,7 +48,10 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
             </p>
             { dataCommentsAd.length > 0
               ? (
-                <button className="w-fit font-roboto font-normal text-base text-blue-custom-def">
+                <button 
+                  className="w-fit font-roboto font-normal text-base text-blue-custom-def"
+                  onClick={ handlerOnClickOpenModal }
+                >
                   { dataCommentsAd.length > 1
                     ?  `${dataCommentsAd.length + 1} отзыва`
                     : `${dataCommentsAd.length + 1} отзыв` }
@@ -90,7 +107,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
             <img
               alt="avatar"
               className="w-full h-full object-cover"
-              onError={ () => setIsErrorLoadingAvatartUser(true) }
+              onError={ () => setIsErrorLoadingAvatarUser(true) }
               src={ `${import.meta.env.VITE_API_URL}/${dataAd.user.avatar}` }
             />
             { isErrorLoadingAvatarUser
@@ -117,6 +134,19 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           </div>
         </div>
       ) }
+
+      { isOpenModalComment
+        ? (
+          <Backdrop 
+            onClick={ handlerOnClickCloseModal }
+          >
+            <ModalComment 
+              commentList={ dataCommentsAd }
+              onClickCloseModal={ handlerOnClickCloseModal }
+            />
+          </Backdrop>
+        )
+        : null }
     </div>
   );
 };

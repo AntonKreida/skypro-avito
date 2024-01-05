@@ -18,6 +18,16 @@ const apiSliceAd = apiBaseSlice.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["AdComment"],
+    }),
+    postCreateAdComment: builder.mutation<IComment, {id: string ; text: string}>({
+      query: (dataForm) => ({
+        url: `/ads/${dataForm.id}/comments`,
+        method: "POST",
+        body: {
+          text: dataForm.text,
+        },
+      }),
+      invalidatesTags: ["AdComment"],
     })
   })
 });
@@ -25,4 +35,5 @@ const apiSliceAd = apiBaseSlice.injectEndpoints({
 export const {
   useGetAdQuery,
   useGetAdCommentQuery,
+  usePostCreateAdCommentMutation,
 } = apiSliceAd;

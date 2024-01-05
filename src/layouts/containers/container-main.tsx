@@ -14,9 +14,11 @@ export const ContainerMain = () => {
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="
+    flex flex-col w-screen h-fit overflow-x-hidden"
+    >
       <Header />
-      <main className="pt-20 w-full px-32 pb-32">
+      <main className="pt-20 w-full h-fit px-32 pb-32 overflow-x-hidden">
         { location.pathname !== "/" && (
           <div className="flex justify-start gap-14 w-full h-fit py-11 items-center">
             <Logo />
