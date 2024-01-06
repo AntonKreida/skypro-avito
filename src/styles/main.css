@@ -3,3 +3,6 @@
 
 /*2. FONTS */
 @import "./fonts/fonts.css";
+
+/*3. UTIL */ 
+@import "./util/swiper.css";

@@ -104,10 +104,10 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
             { ...getInputProps() }
           />
 
-          <div className="w-full grid grid-cols-2 gap-2 items-center sm:grid-cols-3 md:grid-cols-5">
+          <div className="w-full grid grid-cols-3 gap-2 items-center md:grid-cols-5">
             { imagesDefaultValue?.map((image, index) => (
               <div 
-                className="md:max-w-24 md:max-h-24 max-w-full 
+                className="md:max-w-24 flex items-center justify-center md:max-h-24 max-w-full 
                 w-full h-full rounded-md overflow-hidden relative group"
                 key={ index }
               >
@@ -126,8 +126,8 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
             )) }
             { listFilesItems.map((file, index) => (
               <div 
-                className="md:max-w-24 md:max-h-24 max-w-full 
-                w-full h-full rounded-md overflow-hidden relative group"
+                className=" 
+                w-full h-full flex items-center justify-center rounded-md overflow-hidden relative group"
                 key={ index }
               >
                 <img 

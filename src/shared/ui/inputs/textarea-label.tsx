@@ -58,9 +58,9 @@ export const TextareaLabel: FC<ITextareaLabelProps> = ({
             className={ twMerge(classNames(`
             w-full h-[200px] bg-none font-roboto text-sm text-black
             placeholder:text-gray-custom placeholder:font-roboto
-            placeholder:text-sm focus:outline-none border border-black/20 px-5 py-3 rounded-md border-gray-custom 
+            placeholder:text-sm focus:outline-none border border-black/20 px-5 py-3 border-gray-custom 
             disabled:text-gray-custom focus:border-blue-custom-def resize-none
-            md:text-lg md:placeholder:text-lg`, {
+            md:text-lg md:placeholder:text-lg rounded-2xl lg:rounded-md`, {
               "!border-red-500": error || isErrorRequestFrom,
             })) }
             defaultValue={ value } 
