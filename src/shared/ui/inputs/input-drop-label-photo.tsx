@@ -85,7 +85,8 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
       name={ name } 
       render={ () => (
         <div 
-          className={ twMerge(classNames("font-roboto text-base text-gray-400 flex-col flex gap-1 w-full ", {
+          className={ twMerge(classNames(`
+          font-roboto text-sm text-gray-400 flex-col flex gap-1 w-full md:text-base`, {
           }, [addStylesLabel])) }
         >
           <div className="flex gap-1">
@@ -103,14 +104,15 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
             { ...getInputProps() }
           />
 
-          <div className="w-full flex gap-2">
+          <div className="w-full grid grid-cols-3 gap-2 items-center md:grid-cols-5">
             { imagesDefaultValue?.map((image, index) => (
               <div 
-                className="w-24 h-24 rounded-md overflow-hidden relative group"
+                className="md:max-w-24 flex items-center justify-center md:max-h-24 max-w-full 
+                w-full h-full rounded-md overflow-hidden relative group"
                 key={ index }
               >
                 <img 
-                  className="w-full h-full object-cover rounded-md"
+                  className="h-24 w-24 md:w-full md:h-full object-cover rounded-md"
                   src={ `${import.meta.env.VITE_API_URL}/${image.url}` }
                 />
                 <button 
@@ -124,11 +126,12 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
             )) }
             { listFilesItems.map((file, index) => (
               <div 
-                className="w-24 h-24 rounded-md overflow-hidden relative group"
+                className=" 
+                w-full h-full flex items-center justify-center rounded-md overflow-hidden relative group"
                 key={ index }
               >
                 <img 
-                  className="w-full h-full object-cover rounded-md"
+                  className="h-24 w-24 md:w-full md:h-full object-cover rounded-md"
                   src={ URL.createObjectURL(file) }
                 />
                 <button 
@@ -146,11 +149,12 @@ export const InputDropLabelPhoto: FC<IInputDropLabelPhotoProps> = ({
                 : 0)
             }).map((_, index) => (
               <div 
-                className="w-24 h-24 bg-slate-100 flex justify-center rounded-md items-center"
+                className="md:max-w-24 md:max-h-24 max-w-full 
+                w-full h-full bg-slate-100 flex justify-center rounded-md items-center"
                 key={ index }
                 onClick={ open }
               >
-                <PlusCircleIcon className="w-10 h-10 stroke-slate-400" />
+                <PlusCircleIcon className="h-24 w-24 md:w-full md:h-full stroke-slate-400" />
               </div>
             )) }
           </div>

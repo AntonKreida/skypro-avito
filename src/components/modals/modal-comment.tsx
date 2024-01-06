@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FC, MouseEventHandler } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -45,18 +45,18 @@ export const ModalComment: FC<IModalCommentProps> = ({
 
   return (
     <div 
-      className="w-[600px] h-[800px] bg-white 
+      className="h-full w-full lg:w-[600px] lg:h-[800px] bg-white 
       rounded-md flex flex-col px-12 py-10 gap-8 overflow-hidden overflow-y-auto"
       onClick={ (event) => event.stopPropagation() }
     >
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-roboto font-medium text-black">
+        <div className="flex items-center justify-center lg:justify-between">
+          <h1 className="text-2xl lg:text-3xl font-roboto font-medium text-black">
             Отзывы о товаре
           </h1>
 
           <button 
-            className="w-fit h-fit active:scale-[0.8] transition"
+            className="w-fit h-fit active:scale-[0.8] transition hidden lg:block"
             onClick={ onClickCloseModal }
           >
             <XMarkIcon className="w-8 h-8 stroke-black/40" />
@@ -79,7 +79,7 @@ export const ModalComment: FC<IModalCommentProps> = ({
                 placeholder="Введите отзыв"
               />
               <Button 
-                className="w-fit"
+                className="lg:w-fit"
                 disabled={ !isDirty || isLoadingComment }
                 text="Опубликовать"
                 type="submit"
@@ -96,6 +96,15 @@ export const ModalComment: FC<IModalCommentProps> = ({
           <CommentItem comment={ comment } key={ comment.id } />
         )) }
       </ul>
+      <button 
+        className="w-fit h-fit absolute left-8 top-10 z-[900] block lg:hidden"
+        onClick={ onClickCloseModal }
+      >
+        <ChevronLeftIcon 
+          className="w-8 h-8 text-white stroke-black "
+          
+        />
+      </button>
     </div>
   );
 };

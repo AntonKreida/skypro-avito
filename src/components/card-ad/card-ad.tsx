@@ -1,13 +1,15 @@
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
 import { formatDistanceToNow } from "date-fns";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import {
   FC, MouseEvent, useMemo, useState, useEffect, 
 } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ModalComment, ModalEditAd } from "@/components/modals";
-import { SliderCard } from "@/components/sliders/slider-card";
+import { SliderCard } from "@/components/sliders/";
 import { useAppDispatch } from "@hooks/";
 import { IAsd, IComment, IUser } from "@interfaces/";
 import { setCurrentSalesman, useDeleteAdsMutation, useGetCurrentUserProfileQuery } from "@redux/";
@@ -24,6 +26,7 @@ interface ICardAdProps {
 
 export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
   const navigate = useNavigate();
+  const params = useParams();
   const dispatch = useAppDispatch();
 
   const { data } = useGetCurrentUserProfileQuery(null);
@@ -73,11 +76,26 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
   }, [isSuccess, navigate]);
 
   return (
-    <div className="grid grid-cols-2 w-full gap-14 overflow-x-hidden">
+    <div 
+      className="grid grid-cols-1 
+      grid-flow-row lg:grid-cols-2 w-full gap-0 lg:gap-14 
+      overflow-x-hidden items-center pb-12 lg:pb-0 relative"
+    >
       { dataAd.images.length > 0
         ? (<SliderCard slidersList={ dataAd.images } />)
-        : <div className="w-full h-full bg-slate-400" /> }
-      <div className="flex flex-col gap-9">
+        : (
+          <div 
+            className="max-h-[800px] h-[800px] relative top-0 left-0 lg:h-full w-full bg-slate-400 
+            col-span-2 lg:grid-cols-1 row-span-1 lg:col-span-1 rounded"
+          />
+        ) }
+      <div 
+        className={ classNames(`flex flex-col gap-9 mt-5 lg:m-0 col-span-2 
+        lg:grid-cols-1 lg:col-span-1
+        drop-shadow row-span-1`, {
+          "px-6": params?.idAd && !params?.idSalesman,
+        }) } 
+      >
         <div className="flex flex-col gap-2">
           <h2 className="font-roboto font-bold text-3xl">{ dataAd.title }</h2>
           <div className="flex flex-col">
@@ -113,15 +131,15 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           </p>
           { data?.id !== dataAd.user_id
             ? (
-              <div>
+              <div className="flex">
                 { !isShowOpenPhone && hidePhoneCurrentUserAd 
                   ? (
                     (
                       <button 
-                        className="px-8 py-3 w-fit
+                        className="px-8 py-3 w-full
                     disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
                     text-white font-roboto font-normal text-base rounded-md
-                    focus:outline-none active:scale-90 transition
+                    focus:outline-none active:scale-90 transition lg:w-fit
                     disabled:text-gray-600 disabled:cursor-default disabled:scale-100"
                         onClick={ () => setIsShowOpenPhone(true) }
                       >
@@ -132,7 +150,7 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
                   )
                   : (
                     <a 
-                      className="px-8 py-3 text-center w-fit
+                      className="px-8 py-3 text-center w-full lg:w-fit h-fit
                     disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
                     text-white font-roboto font-normal text-base rounded-md
                     focus:outline-none active:scale-90 transition
@@ -146,15 +164,15 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               </div>
             )
             : (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center flex-col gap-3 lg:flex-row">
                 <Button
-                  className="w-fit"
+                  className="lg:w-fit"
                   onClick={ handlerOnClickOpenModalEditAd }
                   text="Редактировать"
                   type="button"
                 />
                 <Button
-                  className="w-fit"
+                  className="lg:w-fit"
                   onClick={ handlerDeleteAd }
                   text="Снять с публикации"
                   type="button"
@@ -193,7 +211,10 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
         </Link>
       </div>
       { !!dataAd.description && (
-        <div className="col-span-2 ">
+        <div className={ classNames("col-span-2 mt-10 lg:m-0", {
+          "px-6": params?.idAd && !params?.idSalesman,
+        }) }
+        >
           <div className="flex flex-col gap-5 w-5/6">
             <h2 className="text-3xl font-roboto font-medium">Описание товара</h2>
             <p className="text-lg font-roboto font-normal">{ dataAd.description }</p>
@@ -228,6 +249,10 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
           </Backdrop>
         )
         : null }
+      <ChevronLeftIcon 
+        className="w-10 h-10 text-white absolute left-0 top-16 cursor-pointer stroke-black z-[900] block lg:hidden"
+        onClick={ () => navigate("/") }
+      />
     </div>
   );
 };

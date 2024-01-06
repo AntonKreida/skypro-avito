@@ -1,4 +1,4 @@
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dispatch, FC, MouseEventHandler, SetStateAction, useEffect 
@@ -11,18 +11,18 @@ import {
   Button, InputDropLabelPhoto, InputLabel, TextareaLabel 
 } from "@shared/";
 
-import { TSchemaCreateAsd, schemaCreateAsd } from "./schema/schema-create-asd";
+import { TSchemaCreateEditAd, schemaCreateEditAd } from "./schema/schema-create-edit-ad";
 
 
-interface IModalCreateAsdProps {
+interface IModalCreateAdProps {
     onClickCloseModal: MouseEventHandler<HTMLButtonElement>;
     setIsOpenModal: Dispatch<SetStateAction<boolean>>
 }
 
-export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
+export const ModalCreateAd: FC<IModalCreateAdProps> = ({ onClickCloseModal, setIsOpenModal }) => {
   const {
     control, setValue, handleSubmit, formState: { errors, isDirty } 
-  } = useForm<TSchemaCreateAsd>({
+  } = useForm<TSchemaCreateEditAd>({
     defaultValues: {
       title: "",
       description: "",
@@ -30,7 +30,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
       files: null,
     },
     mode: "onTouched",
-    resolver: zodResolver(schemaCreateAsd),
+    resolver: zodResolver(schemaCreateEditAd),
   });
 
   const [
@@ -42,7 +42,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
     { isLoading: isLoadingImage, isSuccess: isSuccessImage }
   ] = usePostCreateAdsImageMutation();
 
-  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateAsd> = async (data) => {
+  const handlerOnSubmitForm: SubmitHandler<TSchemaCreateEditAd> = async (data) => {
     const dataForCreateAsd = {
       title: data.title,
       description: data.description,
@@ -73,16 +73,16 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
 
   return (
     <div 
-      className="w-[600px] h-[800px] bg-white rounded-md flex flex-col px-12 py-10 gap-3"
+      className="h-full relative w-full lg:w-[600px] lg:h-[800px] bg-white rounded-md flex flex-col px-12 py-10 gap-3"
       onClick={ (event) => event.stopPropagation() }
     >
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-roboto font-medium text-black">
+      <div className="flex items-center justify-center lg:justify-between">
+        <h1 className="md:text-3xl text-xl font-roboto font-medium text-black">
           Новое объявление
         </h1>
       
         <button 
-          className="w-fit h-fit active:scale-[0.8] transition"
+          className="w-fit h-fit active:scale-[0.8] hidden lg:block transition"
           onClick={ onClickCloseModal }
         >
           <XMarkIcon className="w-8 h-8 stroke-black/40" />
@@ -118,7 +118,7 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
         />
         <InputLabel
           addStyleInput="pr-9"
-          addStylesLabel="text-black w-fit"
+          addStylesLabel="text-black lg:w-fit w-full"
           control={ control }
           disabled={ isLoadingText || isLoadingImage }
           icon={ <RubIcon className="w-5 h-5 absolute top-1/2 right-4 -translate-y-1/2" /> }
@@ -128,12 +128,21 @@ export const ModalCreateAsd: FC<IModalCreateAsdProps> = ({ onClickCloseModal, se
           type="number"
         />
         <Button 
-          className="w-fit"
+          className="lg:w-fit w-full"
           disabled={ !isDirty }
           text="Создать"
           type="submit"
         />
       </form>
+      <button 
+        className="w-fit h-fit absolute left-8 top-10 z-[900] block lg:hidden"
+        onClick={ onClickCloseModal }
+      >
+        <ChevronLeftIcon 
+          className="w-8 h-8 text-white stroke-black "
+          
+        />
+      </button>
     </div>
   );
 }; 

@@ -20,7 +20,10 @@ export const TableItemAsd: FC<ITableItemAsdProps> = ({ itemAsd }) => {
     
 
   return (
-    <div className="flex flex-col gap-5 items-center justify-center col-span-1">
+    <div 
+      className="flex flex-col gap-5 items-center justify-center 
+      col-span-1 shadow-lg rounded-md lg:shadow-none lg:rounded-none"
+    >
       <div className="w-full h-[270px] relative">
         <img
           className="w-full h-full object-cover rounded" 
@@ -33,14 +36,18 @@ export const TableItemAsd: FC<ITableItemAsdProps> = ({ itemAsd }) => {
           )
           : null }
       </div>
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-2 w-full p-3 pb-5 lg:p-0">
         <div className="w-full overflow-hidden">
           <Link to={ `/${itemAsd.id}` }>
-            <p className="font-roboto font-medium text-xl text-blue-custom-def h-8 truncate">{ itemAsd.title }</p>
+            <p 
+              className="font-roboto font-medium text-sm lg:text-xl text-blue-custom-def truncate"
+            >
+              { itemAsd.title }
+            </p>
           </Link>
         </div>
         <div>
-          <p className="font-roboto font-medium text-lg text-black">
+          <p className="font-roboto font-medium lg:text-lg text-base text-black">
             { itemAsd.price.toLocaleString("ru-RU", {
               style:"currency",
               currency: "RUB",
@@ -48,9 +55,9 @@ export const TableItemAsd: FC<ITableItemAsdProps> = ({ itemAsd }) => {
             }) }
           </p>
         </div>
-        <div className="w-full flex flex-col gap-1">
-          <p className="font-roboto font-normal text-base text-black/70">{ itemAsd.user.city }</p>
-          <p className="font-roboto font-normal text-base text-black/70">
+        <div className="w-full flex flex-col gap-1 text-xs lg:text-base">
+          <p className="font-roboto font-normal text-black/70">{ itemAsd.user.city }</p>
+          <p className="font-roboto font-normal text-black/70">
             { formatDistanceToNow (new Date(itemAsd.created_on), { locale: ru, addSuffix: true }) }
           </p>
         </div>

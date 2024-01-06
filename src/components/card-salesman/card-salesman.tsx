@@ -18,7 +18,19 @@ export const CardSalesman: FC<ICardSalesmanProps> = ({ dataSalesman }) => {
   const hidePhoneSalesman = useMemo(() => hidePhoneUser(dataSalesman.phone), [dataSalesman.phone]);
 
   return (
-    <div className="flex items-center gap-12 px-14">
+    <div className="flex flex-col items-center gap-12 px-0 lg:px-14 lg:flex-row">
+      <div className="flex flex-col gap-2 w-full lg:hidden">
+        <p className="font-roboto font-semibold text-xl text-black">
+          { dataSalesman.name }
+        </p>
+        <p className="font-roboto font-normal text-base text-black/70">{ dataSalesman.city }</p>
+        <p className="font-roboto font-normal text-base text-black/70">
+          { `Продает товары с ${format(new Date(dataSalesman.sells_from), "MMMM yyyy", {
+            locale: ru
+          })}` }
+        </p>
+      </div>
+
       <div className="w-32 h-32 rounded-full relative border border-black overflow-hidden">
         <img
           className="w-full h-full object-cover"
@@ -29,8 +41,8 @@ export const CardSalesman: FC<ICardSalesmanProps> = ({ dataSalesman }) => {
           ? <div className="w-full h-full absolute left-0 top-0 rounded-full bg-slate-300" />
           : null }
       </div>
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
+      <div className="flex-col gap-8 w-full">
+        <div className="flex-col gap-2 hidden lg:flex">
           <p className="font-roboto font-semibold text-xl text-black">
             { dataSalesman.name }
           </p>
@@ -45,7 +57,7 @@ export const CardSalesman: FC<ICardSalesmanProps> = ({ dataSalesman }) => {
           ? (
             (
               <button 
-                className="px-8 py-3 w-fit
+                className="px-8 py-3 w-full lg:w-fit
                   disabled:bg-gray-custom bg-blue-custom-def hover:bg-blue-custom-hover
                   text-white font-roboto font-normal text-base rounded-md
                   focus:outline-none active:scale-90 transition

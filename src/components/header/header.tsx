@@ -1,18 +1,23 @@
-import { MouseEvent, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { MouseEvent, useState, FC } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 
-import { ModalCreateAsd } from "@/components/modals";
+import { ModalCreateAd } from "@/components/modals/";
 import Logo from "@assets/icon/logo-head.svg?react";
 import { useAppSelector } from "@hooks/";
 import { selectorUser } from "@redux/";
-import { Button, Backdrop } from "@shared/";
+import { Button, Backdrop, InputSearch } from "@shared/";
 
 
-export const Header = () => {
+interface IHeaderProps {
+  setValuesAsdForSearch: React.Dispatch<React.SetStateAction<string>>
+}
+
+
+export const Header: FC<IHeaderProps> = ({ setValuesAsdForSearch }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { isAuthUser } = useAppSelector(selectorUser);
   const navigate = useNavigate();
-
+  const location = useLocation();
 
   const handlerOnClickLogin = () => {
     navigate("/login");
@@ -31,7 +36,6 @@ export const Header = () => {
     setIsOpenModal(false);
   };
 
-
   return (
     <header className="
     flex items-center justify-between w-full 
@@ -44,7 +48,7 @@ export const Header = () => {
       { !isAuthUser
         ? (
           <Button 
-            className="w-fit" 
+            className="w-fit hidden lg:block" 
             onClick={ handlerOnClickLogin }
             sizeButton="smile"
             text="Войти в личный кабинет"
@@ -52,7 +56,7 @@ export const Header = () => {
           />
         )
         : (
-          <div className="flex items-center gap-2">
+          <div className="items-center gap-2 lg:flex hidden">
             <Button 
               onClick={ handlerOnClickOpenModal } 
               sizeButton="smile"
@@ -67,10 +71,17 @@ export const Header = () => {
             />
           </div>
         ) }
+      { location.pathname === "/" && (
+        <InputSearch 
+          className="block lg:hidden rounded-[30px]"
+          onChange={ (event) => setValuesAsdForSearch(event.currentTarget.value) }
+          placeholder="Поиск"
+        />
+      ) }
       { isOpenModal
         ? (
           <Backdrop onClick={ handlerOnClickCloseModal }>
-            <ModalCreateAsd 
+            <ModalCreateAd 
               onClickCloseModal={ handlerOnClickCloseModal }
               setIsOpenModal={ setIsOpenModal }
             />

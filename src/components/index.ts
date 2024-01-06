@@ -5,3 +5,4 @@ export * from "./sliders";
 export * from "./modals";
 export * from "./card-ad";
 export * from "./card-salesman";
+export * from "./footer";
