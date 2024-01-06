@@ -37,10 +37,10 @@ export const InputPhone: FC<IInputPhoneProps> = ({
         <PatternFormat
           allowEmptyFormatting={ onFocus }
           className={ classNames(`
-            w-full py-2 bg-none font-roboto text-lg
+            w-full py-2 bg-none font-roboto text-sm
             placeholder:text-gray-custom placeholder:font-roboto
-            placeholder:text-lg focus:outline-none border-b border-gray-custom 
-            disabled:text-gray-custom
+            placeholder:text-sm focus:outline-none border-b border-gray-custom 
+            disabled:text-gray-custom md:text-lg md:placeholder:text-lg
             `) }
           disabled={ disabled } 
           format="+7 (###)-###-##-##" 
