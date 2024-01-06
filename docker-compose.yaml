@@ -39,6 +39,7 @@ services:
       VITE_PORT: ${VITE_PORT}
     ports:
       - ${VITE_PORT}:${VITE_PORT}
+      - ${VITE_API_URL}:${VITE_API_URL}
     depends_on:
       - api 
     restart: always
