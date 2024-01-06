@@ -71,7 +71,8 @@ export const FormSignUp = () => {
 
   return (
     <form 
-      className="p-12 border border-black/30 flex flex-col gap-14 rounded max-w-96 w-full"
+      className="p-12 h-full 
+      sm:border border-black/30 flex flex-col gap-14 rounded sm:h-fit sm:max-w-96 w-full"
       onSubmit={  handleSubmit(handlerOnSubmitForm) }
     >
       <div className="flex items-center justify-center">

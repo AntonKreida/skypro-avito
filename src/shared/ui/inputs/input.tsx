@@ -20,7 +20,8 @@ export const Input: FC<IInputPops> = ({ name, control, ...props }) => (
     w-full py-2 bg-none font-roboto text-sm
     placeholder:text-gray-custom placeholder:font-roboto
     placeholder:text-sm focus:outline-none border-b border-gray-custom 
-    disabled:text-gray-custom md:text-lg md:placeholder:text-lg rounded-full lg:rounded-md
+    disabled:text-gray-custom md:text-lg md:placeholder:text-lg rounded-full border 
+    sm:border-x-0 sm:border-t-0 sm:border-b px-4 sm:px-0 sm:rounded-none
     `) }
         onChange={ onChange }
         value={ value } 

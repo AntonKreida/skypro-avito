@@ -21,7 +21,7 @@ export const ContainerMain = () => {
     flex flex-col w-screen h-fit overflow-x-hidden"
     >
       <Header setValuesAsdForSearch={ setValuesAsdForSearch } />
-      <main className="pt-20 w-full h-fit px-5 pb-10 md:px-32 md:pb-32 overflow-x-hidden">
+      <main className="pt-20 w-full h-fit px-5 md:px-32 pb-12 overflow-x-hidden">
         { location.pathname !== "/" && (
           <div className="hidden justify-start gap-14 w-full h-fit py-11 items-center lg:flex">
             <Logo />
