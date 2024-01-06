@@ -60,7 +60,7 @@ export const SliderProfile: FC<ISliderProfileProps> = ({ slideList }) => {
           <ChevronRightIcon />
         </button>
       </div>
-      <div className="grid lg:hidden grid-cols-2 gap-2">
+      <div className="grid lg:hidden grid-cols-2 gap-2 pb-10 lg:pb-0">
         { slideList.map((item) => (
           <SliderItemAsd itemAsd={ item } key={ item.id } />
         )) }

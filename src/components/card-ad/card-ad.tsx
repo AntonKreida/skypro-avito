@@ -164,15 +164,15 @@ export const CardAd: FC<ICardAdProps> = ({ dataAd, dataCommentsAd }) => {
               </div>
             )
             : (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center flex-col gap-3 lg:flex-row">
                 <Button
-                  className="w-fit"
+                  className="lg:w-fit"
                   onClick={ handlerOnClickOpenModalEditAd }
                   text="Редактировать"
                   type="button"
                 />
                 <Button
-                  className="w-fit"
+                  className="lg:w-fit"
                   onClick={ handlerDeleteAd }
                   text="Снять с публикации"
                   type="button"
