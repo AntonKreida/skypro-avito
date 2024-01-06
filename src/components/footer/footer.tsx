@@ -1,15 +1,28 @@
 import { LockOpenIcon } from "@heroicons/react/24/outline";
+import { MouseEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { ModalCreateAd } from "@/components/modals";
 import Home from "@assets/icon/home.svg?react";
 import Plus from "@assets/icon/plus.svg?react";
 import User from "@assets/icon/user.svg?react";
 import { useAppSelector } from "@hooks/";
 import { selectorUser } from "@redux/";
+import { Backdrop } from "@shared/";
 
 
 export const Footer = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const { isAuthUser } = useAppSelector(selectorUser);
+
+  const handlerOnClickOpenModal = () => {
+    setIsOpenModal(true);
+  };
+
+  const handlerOnClickCloseModal = (event: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
+    event.stopPropagation();
+    setIsOpenModal(false);
+  };
   
 
   return (
@@ -21,7 +34,7 @@ export const Footer = () => {
       <Link to="/">
         <Home className="w-10 h-10" />
       </Link>
-      { !!isAuthUser && <Plus className="w-10 h-10" /> }
+      { !!isAuthUser && <Plus className="w-10 h-10" onClick={ handlerOnClickOpenModal } /> }
       { !!isAuthUser
         && (
           <Link to="/profile">
@@ -33,6 +46,17 @@ export const Footer = () => {
           <LockOpenIcon className="w-10 h-10 stroke-blue-custom-def" />
         </Link>
       ) }
+
+      { isOpenModal
+        ? (
+          <Backdrop onClick={ handlerOnClickCloseModal }>
+            <ModalCreateAd 
+              onClickCloseModal={ handlerOnClickCloseModal }
+              setIsOpenModal={ setIsOpenModal }
+            />
+          </Backdrop>
+        )
+        : null }
     </footer>
   );
 };

@@ -40,7 +40,7 @@ export const InputPhone: FC<IInputPhoneProps> = ({
             w-full py-2 bg-none font-roboto text-sm
             placeholder:text-gray-custom placeholder:font-roboto
             placeholder:text-sm focus:outline-none border-b border-gray-custom 
-            disabled:text-gray-custom md:text-lg md:placeholder:text-lg
+            disabled:text-gray-custom md:text-lg md:placeholder:text-lg rounded-full lg:rounded-md
             `) }
           disabled={ disabled } 
           format="+7 (###)-###-##-##" 

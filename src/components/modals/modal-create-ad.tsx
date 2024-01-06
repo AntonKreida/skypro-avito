@@ -73,11 +73,11 @@ export const ModalCreateAd: FC<IModalCreateAdProps> = ({ onClickCloseModal, setI
 
   return (
     <div 
-      className="w-[600px] h-[800px] bg-white rounded-md flex flex-col px-12 py-10 gap-3"
+      className="max-w-[600px] w-full h-fit bg-white rounded-md flex flex-col px-12 py-10 gap-3"
       onClick={ (event) => event.stopPropagation() }
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-roboto font-medium text-black">
+        <h1 className="md:text-3xl text-xl font-roboto font-medium text-black">
           Новое объявление
         </h1>
       

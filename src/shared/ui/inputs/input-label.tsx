@@ -42,7 +42,8 @@ export const InputLabel: FC<IInputLabelProps> = ({
           name, onChange, value 
         }, fieldState: { error } 
       }) => (
-        <label className={ twMerge(classNames("font-roboto text-base text-gray-400 flex-col flex gap-1 w-full ", {
+        <label className={ twMerge(classNames(`font-roboto 
+        text-sm text-gray-400 flex-col flex gap-1 w-full md:text-base`, {
           "text-red-500": error || isErrorRequestFrom,
           "text-gray-300": disabled,
           "!text-blue-custom-def": isFocus,
@@ -64,9 +65,9 @@ export const InputLabel: FC<IInputLabelProps> = ({
               className={ twMerge(classNames(`
             w-full bg-none font-roboto text-sm text-black
             placeholder:text-gray-custom placeholder:font-roboto
-            placeholder:text-sm focus:outline-none border border-black/20 px-5 py-3 rounded-md border-gray-custom 
+            placeholder:text-sm focus:outline-none border border-black/20 px-5 py-3 border-gray-custom 
             disabled:text-gray-custom focus:border-blue-custom-def
-            md:text-lg md:placeholder:text-lg`, {
+            md:text-lg md:placeholder:text-lg rounded-full lg:rounded-md`, {
                 "!border-red-500": error || isErrorRequestFrom,
               }, [addStyleInput])) }
               defaultValue={ value } 

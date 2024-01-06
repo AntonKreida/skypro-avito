@@ -45,12 +45,12 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
   
   return (
     <form className="flex flex-col gap-6 px-14" onSubmit={ handleSubmit(handlerOnSubmitForm) }>
-      <h2 className="text-3xl font-roboto font-medium">Настройка профиля</h2>
-      <div className="flex gap-14">
+      <h2 className="text-lg font-roboto font-medium lg:text-3xl">Настройка профиля</h2>
+      <div className="flex flex-col gap-8 lg:gap-14 lg:flex-row">
         <InputDropPhoto control={ control } maxFiles={ 1 } name="avatar" setValue={ setValue } />
         <div className="flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-5">
-            <div className="flex gap-4 items-center w-full">
+            <div className="flex gap-4 flex-col items-center w-full lg:flex-row">
               <InputLabel
                 control={ control }
                 disabled={ isLoadingAvatar || isLoadingProfile }
@@ -86,7 +86,7 @@ export const FormProfile:FC<IFormProfileProps> = ({ userProfile }) => {
             </div>
           </div>
           <Button 
-            className="w-fit"
+            className="lg:w-fit"
             disabled={ !isDirty || isLoadingAvatar || isLoadingProfile }
             text="Сохранить"
             type="submit"
