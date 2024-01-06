@@ -10,17 +10,28 @@ import { Spinner } from "@shared/";
 export const Salesman = () => {
   const navigate = useNavigate();
   const salesmanData = useAppSelector(selectorSalesman);
-  const { data: adsSalesman, isLoading } = useGetAdsSalesmanQuery(salesmanData.id);
+  const {
+    data: adsSalesman, isLoading, isError, isSuccess 
+  } = useGetAdsSalesmanQuery(salesmanData.id);
 
   return  (
     <div>
-      { isLoading || !adsSalesman
+      { isLoading
         ? (
           <div className="w-full h-full flex flex-col items-center justify-center">
             <Spinner />
           </div>
         )
-        : (
+        : null }
+      { isError
+        ? (
+          <div className="w-full h-full flex flex-col items-center justify-center">
+            <p className="text-2xl">Произошла ошибка! Пожалуйста, перезапустите страницу!</p>
+          </div>
+        )
+        : null }  
+      { isSuccess
+        ? (
           <div className="flex flex-col gap-10 w-full">
             <div className="flex items-center gap-3">
               <button 
@@ -29,7 +40,6 @@ export const Salesman = () => {
               >
                 <ChevronLeftIcon 
                   className="w-8 h-8 text-white stroke-black "
-          
                 />
               </button>
 
@@ -44,7 +54,8 @@ export const Salesman = () => {
                 : null }
             </div>
           </div>
-        ) }
+        )
+        : null }
     </div>
   );
 };
